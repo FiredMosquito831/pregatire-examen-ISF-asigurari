@@ -3,7 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grile Asigurări - Simulator Examen</title>
+    
+    <!-- SEO Optimization -->
+    <title>Grile Asigurări - Simulator Examen ISF & Pregătire Profesională</title>
+    <meta name="description" content="Simulator complet pentru examenul de certificare în asigurări (ISF). Pregătește-te eficient cu sute de grile, teste și întrebări actualizate din domeniul asigurărilor. Mod practică și examen.">
+    <meta name="keywords" content="asigurări, examen ISF, pregatire profesionala, grile asigurari, test intrebari, intrebari asigurări, simulator examen, certificare distribuitor asigurari, ISF, teste grila, examen agent asigurari, RCA, CASCO, legislatie asigurari">
+    <meta name="author" content="Simulator Grile Asigurări">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="Romanian">
+    
+    <!-- Open Graph / Social Media -->
+    <meta property="og:title" content="Grile Asigurări - Simulator Examen ISF">
+    <meta property="og:description" content="Testează-ți cunoștințele pentru examenul ISF cu simulatorul nostru de grile. Întrebări actualizate și moduri de învățare flexibile.">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="ro_RO">
     
     <!-- React & ReactDOM -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
@@ -56,7 +69,7 @@
     <script type="text/babel">
         const { useState, useEffect, useMemo, useRef } = React;
 
-        // --- 1. DATA INPUT (Noua Structură JSON) ---
+        // --- 1. DATA INPUT (Structura JSON corectă) ---
         const RAW_DATA = [
     {
         "id": 1,
@@ -9182,9 +9195,8 @@
     }
 ];
 
-        // --- 2. LOGICĂ PROCESARE ACTUALIZATĂ ---
+        // --- 2. LOGICĂ PROCESARE ---
         function processQuestions(rawData) {
-            // Nu mai este nevoie de 'reduce' pentru grupare, structura este deja ierarhică.
             // Mapăm direct array-ul de întrebări.
             return rawData.map(q => {
                 const options = q.answers.map((ans, index) => {
