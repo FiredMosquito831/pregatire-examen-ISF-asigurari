@@ -12,35 +12,58 @@
     <!-- Babel for JSX -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
-    <!-- Tailwind CSS -->
+    <!-- Tailwind CSS with Dark Mode Config -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        dark: {
+                            bg: '#111827',
+                            card: '#1f2937',
+                            text: '#f9fafb',
+                            secondary: '#9ca3af',
+                            border: '#374151'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     
     <!-- Phosphor Icons -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #f3f4f6; }
+        body { font-family: 'Inter', sans-serif; }
         .fade-in { animation: fadeIn 0.3s ease-in-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .dark ::-webkit-scrollbar-thumb { background: #4b5563; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
 </head>
-<body>
+<body class="transition-colors duration-300">
     <div id="root"></div>
 
     <script type="text/babel">
         const { useState, useEffect, useMemo, useRef } = React;
 
         // --- 1. DATA INPUT ---
-        // INSTRUCTIUNI: Aici este array-ul cu structura JSON cerută.
-        // Copiază întregul tău set de 507 întrebări și înlocuiește conținutul variabilei RAW_DATA.
         const RAW_DATA = [
     {
         "id": "1",
         "question": "Care dintre următoarele afirmații se referă la un risc asigurabil?",
         "answers": [
             {
-                "text": "un eveniment viitor, posibil, cu caracter întâmplător",
+                "text": "un evenimentviitor, posibil, cu caracter întâmplător",
                 "is_correct": true
             }
         ]
@@ -50,7 +73,7 @@
         "question": "Care dintre următoarele afirmații se referă la un risc asigurabil?",
         "answers": [
             {
-                "text": "o situație concretă de pericol grav și iminent de accidentare",
+                "text": "o situație concretă de pericol grav șiiminent de accidentare",
                 "is_correct": false
             }
         ]
@@ -67,67 +90,67 @@
     },
     {
         "id": "2",
-        "question": "Selecția riscurilor presupune:",
+        "question": "Selecțiariscurilor presupune:",
         "answers": [
             {
-                "text": "asiguratul își poate alege riscurile pe care le lasă în seama asigurătorului",
+                "text": "asiguratul îșipoate alegeriscurile pe care le lasă în seama asigurătorului",
                 "is_correct": false
             }
         ]
     },
     {
         "id": "2",
-        "question": "Selecția riscurilor presupune:",
+        "question": "Selecțiariscurilor presupune:",
         "answers": [
             {
-                "text": "anumite riscuri pot fi excluse sau pot fi cuprinse în asigurare, în condiții tarifare corespunzătoare",
+                "text": "anumiteriscuri pot fi excluse sau pot fi cuprinse în asigurare, în condițiitarifare corespunzătoare",
                 "is_correct": true
             }
         ]
     },
     {
         "id": "2",
-        "question": "Selecția riscurilor presupune:",
+        "question": "Selecțiariscurilor presupune:",
         "answers": [
             {
-                "text": "asigurătorul este obligat să aleagă anumite riscuri",
+                "text": "asigurătorul este obligat să aleagă anumiteriscuri",
                 "is_correct": false
             }
         ]
     },
     {
         "id": "3",
-        "question": "Ce presupune selecția adversă a riscurilor?",
+        "question": "Ce presupune selecția adversă ariscurilor?",
         "answers": [
             {
-                "text": "asiguratul își poate alege riscurile pe care le lasă în seama asigurătorului",
+                "text": "asiguratul îșipoate alegeriscurile pe care le lasă în seama asigurătorului",
                 "is_correct": false
             }
         ]
     },
     {
         "id": "3",
-        "question": "Ce presupune selecția adversă a riscurilor?",
+        "question": "Ce presupune selecția adversă ariscurilor?",
         "answers": [
             {
-                "text": "anumite riscuri pot fi excluse sau pot fi cuprinse în condiții tarifare deosebite",
+                "text": "anumiteriscuri pot fi excluse sau pot fi cuprinse în condițiitarifare deosebite",
                 "is_correct": false
             }
         ]
     },
     {
         "id": "3",
-        "question": "Ce presupune selecția adversă a riscurilor?",
+        "question": "Ce presupune selecția adversă ariscurilor?",
         "answers": [
             {
-                "text": "probabilitatea mai ridicată de a încheia o asigurare de către persoanele supuse la riscuri mai mari",
+                "text": "probabilitateamairidicată de a încheia o asigurare de către persoanele supuse lariscurimaimari",
                 "is_correct": true
             }
         ]
     },
     {
         "id": "4",
-        "question": "În raport cu posibilitatea de a fi acoperite prin asigurare, riscurile pot fi:",
+        "question": "Înraport cuposibilitatea deafiacoperite prin asigurare, riscurile pot fi:",
         "answers": [
             {
                 "text": "riscuri naturale și riscuri artificiale",
@@ -137,20 +160,20 @@
     },
     {
         "id": "4",
-        "question": "În raport cu posibilitatea de a fi acoperite prin asigurare, riscurile pot fi:",
+        "question": "Înraport cuposibilitatea deafiacoperite prin asigurare, riscurile pot fi:",
         "answers": [
             {
-                "text": "riscuri antropogene și riscuri neutrogene",
+                "text": "riscuri antropogene și riscurineutrogene",
                 "is_correct": false
             }
         ]
     },
     {
         "id": "4",
-        "question": "În raport cu posibilitatea de a fi acoperite prin asigurare, riscurile pot fi:",
+        "question": "Înraport cuposibilitatea deafiacoperite prin asigurare, riscurile pot fi:",
         "answers": [
             {
-                "text": "riscuri asigurabile și riscuri neasigurabile sau excluse",
+                "text": "riscuri asigurabile și riscurineasigurabile sau excluse",
                 "is_correct": true
             }
         ]
@@ -160,7 +183,7 @@
         "question": "Printre caracteristicile riscului asigurabil se numără:",
         "answers": [
             {
-                "text": "să fie natural sau antropogen, să se producă în grupuri mici şi eterogene",
+                "text": "să fie natural sau antropogen, să se producă în grupurimici şi eterogene",
                 "is_correct": false
             }
         ]
@@ -170,7 +193,7 @@
         "question": "Printre caracteristicile riscului asigurabil se numără:",
         "answers": [
             {
-                "text": "să poată fi măsurat în termeni financiari, să afecteze grupuri mari şi omogene, să fie un risc pur, să fie fortuit",
+                "text": "să poată fimăsurat întermeni financiari, să afecteze grupurimari şi omogene, să fieun risc pur, să fie fortuit",
                 "is_correct": true
             }
         ]
@@ -1320,7 +1343,7 @@
         "question": "Unul dintre avantajele reasigurării este:",
         "answers": [
             {
-                "text": "omai bună acoperire a riscurilor asigurate",
+                "text": "omai bună acoperire ariscurilor asigurate",
                 "is_correct": false
             }
         ]
@@ -1387,7 +1410,7 @@
     },
     {
         "id": "46",
-        "question": "Riscul de malpraxis intră în categoria riscurilor:",
+        "question": "Riscul de malpraxis intră în categoriariscurilor:",
         "answers": [
             {
                 "text": "obiective",
@@ -1397,7 +1420,7 @@
     },
     {
         "id": "46",
-        "question": "Riscul de malpraxis intră în categoria riscurilor:",
+        "question": "Riscul de malpraxis intră în categoriariscurilor:",
         "answers": [
             {
                 "text": "subiective",
@@ -1407,7 +1430,7 @@
     },
     {
         "id": "46",
-        "question": "Riscul de malpraxis intră în categoria riscurilor:",
+        "question": "Riscul de malpraxis intră în categoriariscurilor:",
         "answers": [
             {
                 "text": "neasigurabile",
@@ -1417,7 +1440,7 @@
     },
     {
         "id": "47",
-        "question": "Riscul de inundații intră în categoria riscurilor:",
+        "question": "Riscul de inundații intră în categoriariscurilor:",
         "answers": [
             {
                 "text": "obiective",
@@ -1427,7 +1450,7 @@
     },
     {
         "id": "47",
-        "question": "Riscul de inundații intră în categoria riscurilor:",
+        "question": "Riscul de inundații intră în categoriariscurilor:",
         "answers": [
             {
                 "text": "subiective",
@@ -1437,7 +1460,7 @@
     },
     {
         "id": "47",
-        "question": "Riscul de inundații intră în categoria riscurilor:",
+        "question": "Riscul de inundații intră în categoriariscurilor:",
         "answers": [
             {
                 "text": "neasigurabile",
@@ -1447,7 +1470,7 @@
     },
     {
         "id": "48",
-        "question": "Riscurile datorate exclusiv evenimentelor naturale fac parte din categoria riscurilor:",
+        "question": "Riscurile datorate exclusiv evenimentelor naturale fac parte din categoriariscurilor:",
         "answers": [
             {
                 "text": "obiective",
@@ -1457,7 +1480,7 @@
     },
     {
         "id": "48",
-        "question": "Riscurile datorate exclusiv evenimentelor naturale fac parte din categoria riscurilor:",
+        "question": "Riscurile datorate exclusiv evenimentelor naturale fac parte din categoriariscurilor:",
         "answers": [
             {
                 "text": "subiective",
@@ -1467,7 +1490,7 @@
     },
     {
         "id": "48",
-        "question": "Riscurile datorate exclusiv evenimentelor naturale fac parte din categoria riscurilor:",
+        "question": "Riscurile datorate exclusiv evenimentelor naturale fac parte din categoriariscurilor:",
         "answers": [
             {
                 "text": "statice",
@@ -1477,7 +1500,7 @@
     },
     {
         "id": "49",
-        "question": "Riscurile a căror producere este influențată de acțiunile oamenilor fac parte din categoria riscurilor:",
+        "question": "Riscurile a căror producere este influențată de acțiunile oamenilor fac parte din categoriariscurilor:",
         "answers": [
             {
                 "text": "obiective",
@@ -1487,7 +1510,7 @@
     },
     {
         "id": "49",
-        "question": "Riscurile a căror producere este influențată de acțiunile oamenilor fac parte din categoria riscurilor:",
+        "question": "Riscurile a căror producere este influențată de acțiunile oamenilor fac parte din categoriariscurilor:",
         "answers": [
             {
                 "text": "subiective",
@@ -1497,7 +1520,7 @@
     },
     {
         "id": "49",
-        "question": "Riscurile a căror producere este influențată de acțiunile oamenilor fac parte din categoria riscurilor:",
+        "question": "Riscurile a căror producere este influențată de acțiunile oamenilor fac parte din categoriariscurilor:",
         "answers": [
             {
                 "text": "dinamice",
@@ -1507,7 +1530,7 @@
     },
     {
         "id": "50",
-        "question": "Riscul financiar de neplată a facturilor cu plata latermen face parte din categoria riscurilor:",
+        "question": "Riscul financiar de neplată a facturilor cu plata latermen face parte din categoriariscurilor:",
         "answers": [
             {
                 "text": "statice",
@@ -1517,7 +1540,7 @@
     },
     {
         "id": "50",
-        "question": "Riscul financiar de neplată a facturilor cu plata latermen face parte din categoria riscurilor:",
+        "question": "Riscul financiar de neplată a facturilor cu plata latermen face parte din categoriariscurilor:",
         "answers": [
             {
                 "text": "dinamice",
@@ -1527,7 +1550,7 @@
     },
     {
         "id": "50",
-        "question": "Riscul financiar de neplată a facturilor cu plata latermen face parte din categoria riscurilor:",
+        "question": "Riscul financiar de neplată a facturilor cu plata latermen face parte din categoriariscurilor:",
         "answers": [
             {
                 "text": "neasigurabile",
@@ -1567,7 +1590,7 @@
     },
     {
         "id": "52",
-        "question": "Probabilitatea de producere a riscurilor statice este:",
+        "question": "Probabilitatea de producere ariscurilor statice este:",
         "answers": [
             {
                 "text": "relativ constantă întimp",
@@ -1577,7 +1600,7 @@
     },
     {
         "id": "52",
-        "question": "Probabilitatea de producere a riscurilor statice este:",
+        "question": "Probabilitatea de producere ariscurilor statice este:",
         "answers": [
             {
                 "text": "variabilă întimp",
@@ -1587,7 +1610,7 @@
     },
     {
         "id": "52",
-        "question": "Probabilitatea de producere a riscurilor statice este:",
+        "question": "Probabilitatea de producere ariscurilor statice este:",
         "answers": [
             {
                 "text": "uneori constantă, uneori variabilă întimp",
@@ -1620,7 +1643,7 @@
         "question": "Asigurarea este ometodă de management a riscului, care are drept scop:",
         "answers": [
             {
-                "text": "înlăturarea cauzelorcare ducla producerea riscurilor generatoare de pagube",
+                "text": "înlăturarea cauzelorcare ducla producereariscurilor generatoare de pagube",
                 "is_correct": false
             }
         ]
@@ -3400,7 +3423,7 @@
         "question": "Eticareprezintă:",
         "answers": [
             {
-                "text": "un ansamblu denorme În raport cu careungrup uman își reglează comportamentul pentru a deosebi ceea ce estelegitim și acceptabil în realizarea scopurilor sale",
+                "text": "un ansamblu denorme înraport cu careungrup uman își reglează comportamentul pentru a deosebi ceea ce estelegitim și acceptabil în realizarea scopurilor sale",
                 "is_correct": true
             }
         ]
@@ -3847,7 +3870,7 @@
     },
     {
         "id": "128",
-        "question": "Prevederiledin Codurile Etice (Codurilede conduită) care impununcadru concret de acţiune al distribuitorilor în asigurări și/sau reasigurări, norme şi principii de activitate În raport cu entitatea angajatoare, respectiv cu care colaborează, cetrebuiesc respectate, eventuale penalizăripentru abaterile dela conduita acceptată fac referire la:",
+        "question": "Prevederiledin Codurile Etice (Codurilede conduită) care impununcadru concret de acţiune al distribuitorilor în asigurări și/sau reasigurări, norme şi principii de activitate înraport cu entitatea angajatoare, respectiv cu care colaborează, cetrebuiesc respectate, eventuale penalizăripentru abaterile dela conduita acceptată fac referire la:",
         "answers": [
             {
                 "text": "responsabilitateadistribuitorului în asigurări și/saureasigurări față de client",
@@ -3857,7 +3880,7 @@
     },
     {
         "id": "128",
-        "question": "Prevederiledin Codurile Etice (Codurilede conduită) care impununcadru concret de acţiune al distribuitorilor în asigurări și/sau reasigurări, norme şi principii de activitate În raport cu entitatea angajatoare, respectiv cu care colaborează, cetrebuiesc respectate, eventuale penalizăripentru abaterile dela conduita acceptată fac referire la:",
+        "question": "Prevederiledin Codurile Etice (Codurilede conduită) care impununcadru concret de acţiune al distribuitorilor în asigurări și/sau reasigurări, norme şi principii de activitate înraport cu entitatea angajatoare, respectiv cu care colaborează, cetrebuiesc respectate, eventuale penalizăripentru abaterile dela conduita acceptată fac referire la:",
         "answers": [
             {
                 "text": "responsabilitatea distribuitorului în asigurări și/saureasigurări față de asigurător, respectiv față de intermediarul principal",
@@ -3867,7 +3890,7 @@
     },
     {
         "id": "128",
-        "question": "Prevederiledin Codurile Etice (Codurilede conduită) care impununcadru concret de acţiune al distribuitorilor în asigurări și/sau reasigurări, norme şi principii de activitate În raport cu entitatea angajatoare, respectiv cu care colaborează, cetrebuiesc respectate, eventuale penalizăripentru abaterile dela conduita acceptată fac referire la:",
+        "question": "Prevederiledin Codurile Etice (Codurilede conduită) care impununcadru concret de acţiune al distribuitorilor în asigurări și/sau reasigurări, norme şi principii de activitate înraport cu entitatea angajatoare, respectiv cu care colaborează, cetrebuiesc respectate, eventuale penalizăripentru abaterile dela conduita acceptată fac referire la:",
         "answers": [
             {
                 "text": "responsabilitatea distribuitorului în asigurări și/saureasigurări față de publicul larg",
@@ -4567,7 +4590,7 @@
     },
     {
         "id": "152",
-        "question": "Interesul asigurabil, cuprivirela asigurările deviață, este cuantificabil în termeni financiari?",
+        "question": "Interesul asigurabil, cuprivirela asigurările deviață, este cuantificabil întermeni financiari?",
         "answers": [
             {
                 "text": "întotdeauna",
@@ -4577,7 +4600,7 @@
     },
     {
         "id": "152",
-        "question": "Interesul asigurabil, cuprivirela asigurările deviață, este cuantificabil în termeni financiari?",
+        "question": "Interesul asigurabil, cuprivirela asigurările deviață, este cuantificabil întermeni financiari?",
         "answers": [
             {
                 "text": "niciodată",
@@ -4587,7 +4610,7 @@
     },
     {
         "id": "152",
-        "question": "Interesul asigurabil, cuprivirela asigurările deviață, este cuantificabil în termeni financiari?",
+        "question": "Interesul asigurabil, cuprivirela asigurările deviață, este cuantificabil întermeni financiari?",
         "answers": [
             {
                 "text": "depinde de situație",
@@ -7730,7 +7753,7 @@
         "question": "Asigurarea de frontieră poate fi încheiată la data la care autovehicululurmează să intre peteritoriul României șipoate fi emisă pentru o perioadă de:",
         "answers": [
             {
-                "text": "15 de zile, cu posibilitatea prelungiriipenoi perioade de câte 15 de zile",
+                "text": "15 de zile, cuposibilitatea prelungiriipenoi perioade de câte 15 de zile",
                 "is_correct": false
             }
         ]
@@ -7740,7 +7763,7 @@
         "question": "Asigurarea de frontieră poate fi încheiată la data la care autovehicululurmează să intre peteritoriul României șipoate fi emisă pentru o perioadă de:",
         "answers": [
             {
-                "text": "30 de zile, cu posibilitatea prelungiriipenoi perioade de câte 30 de zile",
+                "text": "30 de zile, cuposibilitatea prelungiriipenoi perioade de câte 30 de zile",
                 "is_correct": true
             }
         ]
@@ -10500,7 +10523,7 @@
         "question": "În piața de asigurări, împărțirearolurilorunui client (încumpărător, utilizator șiplătitor) poartă denumireade:",
         "answers": [
             {
-                "text": "antiSelecția riscurilor",
+                "text": "antiselecțiariscurilor",
                 "is_correct": false
             }
         ]
@@ -10530,7 +10553,7 @@
         "question": "Practica asigurărilor identifică câteva motive pentru care se produce fenomenul de specializare arolurilor lanivelul clientului, în cumpărător, plătitor și utilizator, iarunul dintremotive este:",
         "answers": [
             {
-                "text": "fenomenul de antiselecție a riscurilor",
+                "text": "fenomenul de antiselecție ariscurilor",
                 "is_correct": false
             }
         ]
@@ -10550,7 +10573,7 @@
         "question": "Practica asigurărilor identifică câteva motive pentru care se produce fenomenul de specializare arolurilor lanivelul clientului, în cumpărător, plătitor și utilizator, iarunul dintremotive este:",
         "answers": [
             {
-                "text": "fenomenul de antiselecție a riscurilor",
+                "text": "fenomenul de antiselecție ariscurilor",
                 "is_correct": false
             }
         ]
@@ -10867,7 +10890,7 @@
     },
     {
         "id": "362",
-        "question": "Vânzarea, în care distribuitorul în asigurări și/saureasigurări se concentrează cuprecădere petranzacția care are loc în prezent, evidențiază avantajele ofertei În raport cu costurile și chiar insistă catranzacția să se realizeze cât mai rapid, inclusiv pentrucă acest lucru înseamnă încasarea comisionului său într-un viitor mai apropiat, este numită:",
+        "question": "Vânzarea, în care distribuitorul în asigurări și/saureasigurări se concentrează cuprecădere petranzacția care are loc în prezent, evidențiază avantajele ofertei înraport cu costurile și chiar insistă catranzacția să se realizeze cât mai rapid, inclusiv pentrucă acest lucru înseamnă încasarea comisionului său într-un viitor mai apropiat, este numită:",
         "answers": [
             {
                 "text": "vânzarea consultativă",
@@ -10877,7 +10900,7 @@
     },
     {
         "id": "362",
-        "question": "Vânzarea, în care distribuitorul în asigurări și/saureasigurări se concentrează cuprecădere petranzacția care are loc în prezent, evidențiază avantajele ofertei În raport cu costurile și chiar insistă catranzacția să se realizeze cât mai rapid, inclusiv pentrucă acest lucru înseamnă încasarea comisionului său într-un viitor mai apropiat, este numită:",
+        "question": "Vânzarea, în care distribuitorul în asigurări și/saureasigurări se concentrează cuprecădere petranzacția care are loc în prezent, evidențiază avantajele ofertei înraport cu costurile și chiar insistă catranzacția să se realizeze cât mai rapid, inclusiv pentrucă acest lucru înseamnă încasarea comisionului său într-un viitor mai apropiat, este numită:",
         "answers": [
             {
                 "text": "vânzare tranzacțională",
@@ -10887,7 +10910,7 @@
     },
     {
         "id": "362",
-        "question": "Vânzarea, în care distribuitorul în asigurări și/saureasigurări se concentrează cuprecădere petranzacția care are loc în prezent, evidențiază avantajele ofertei În raport cu costurile și chiar insistă catranzacția să se realizeze cât mai rapid, inclusiv pentrucă acest lucru înseamnă încasarea comisionului său într-un viitor mai apropiat, este numită:",
+        "question": "Vânzarea, în care distribuitorul în asigurări și/saureasigurări se concentrează cuprecădere petranzacția care are loc în prezent, evidențiază avantajele ofertei înraport cu costurile și chiar insistă catranzacția să se realizeze cât mai rapid, inclusiv pentrucă acest lucru înseamnă încasarea comisionului său într-un viitor mai apropiat, este numită:",
         "answers": [
             {
                 "text": "vânzare agresivă",
@@ -11070,7 +11093,7 @@
         "question": "Înetapade post-vânzare sunt incluse activitățiprecum:",
         "answers": [
             {
-                "text": "antiSelecția riscurilor",
+                "text": "antiselecțiariscurilor",
                 "is_correct": false
             }
         ]
@@ -14497,17 +14520,17 @@
     },
     {
         "id": "483",
-        "question": "Una din cauzele pentru care undistribuitor în asigurări și/sau reasigurări își poate pierdedreptul de profesa oreprezintă:",
+        "question": "Una din cauzele pentru care undistribuitor în asigurări și/sau reasigurări îșipoate pierdedreptul de profesa oreprezintă:",
         "answers": [
             {
-                "text": "neînregistrarea, în termenii și condițiile precizate înmetodologia de certificare aplicabilă în vigoare, încontul acestuia din Platforma ISF a creditelor anuale de pregătire profesională continuă",
+                "text": "neînregistrarea, întermenii și condițiile precizate înmetodologia de certificare aplicabilă în vigoare, încontul acestuia din Platforma ISF a creditelor anuale de pregătire profesională continuă",
                 "is_correct": true
             }
         ]
     },
     {
         "id": "483",
-        "question": "Una din cauzele pentru care undistribuitor în asigurări și/sau reasigurări își poate pierdedreptul de profesa oreprezintă:",
+        "question": "Una din cauzele pentru care undistribuitor în asigurări și/sau reasigurări îșipoate pierdedreptul de profesa oreprezintă:",
         "answers": [
             {
                 "text": "subscriereaunui număr redus de contracte de asigurare",
@@ -14517,7 +14540,7 @@
     },
     {
         "id": "483",
-        "question": "Una din cauzele pentru care undistribuitor în asigurări și/sau reasigurări își poate pierdedreptul de profesa oreprezintă:",
+        "question": "Una din cauzele pentru care undistribuitor în asigurări și/sau reasigurări îșipoate pierdedreptul de profesa oreprezintă:",
         "answers": [
             {
                 "text": "parcurgereaunui program de pregătire profesională continuă cu durata de 15 ore",
@@ -14527,7 +14550,7 @@
     },
     {
         "id": "484",
-        "question": "Undistribuitor în asigurări și/saureasigurări își poateredobândi dreptul de aprofesa:",
+        "question": "Undistribuitor în asigurări și/saureasigurări îșipoateredobândi dreptul de aprofesa:",
         "answers": [
             {
                 "text": "prin recuperarea tuturor creditelordepregătire profesională continuă într-un interval de 3 luni",
@@ -14537,7 +14560,7 @@
     },
     {
         "id": "484",
-        "question": "Undistribuitor în asigurări și/saureasigurări își poateredobândi dreptul de aprofesa:",
+        "question": "Undistribuitor în asigurări și/saureasigurări îșipoateredobândi dreptul de aprofesa:",
         "answers": [
             {
                 "text": "doarprin reluarea ciclului de pregătire profesională inițială",
@@ -14547,7 +14570,7 @@
     },
     {
         "id": "484",
-        "question": "Undistribuitor în asigurări și/saureasigurări își poateredobândi dreptul de aprofesa:",
+        "question": "Undistribuitor în asigurări și/saureasigurări îșipoateredobândi dreptul de aprofesa:",
         "answers": [
             {
                 "text": "prin absolvirea unuinou examen depregătire profesională corespunzătorciclului de pregătire profesională al ultimului certificat de absolvire deținut",
@@ -14677,7 +14700,7 @@
     },
     {
         "id": "489",
-        "question": "Undistribuitor în asigurări și/saureasigurări cu definitivat își poateredobândi dreptul de aprofesa:",
+        "question": "Undistribuitor în asigurări și/saureasigurări cu definitivat îșipoateredobândi dreptul de aprofesa:",
         "answers": [
             {
                 "text": "fără amai susține examenul de definitivat prin recuperarea tuturor creditelordepregătire profesională continuă și absolvirea unuinou examen depregătire profesională continuă întermen de 6 luni dela data la care trebuiau acumulate creditele",
@@ -14687,7 +14710,7 @@
     },
     {
         "id": "489",
-        "question": "Undistribuitor în asigurări și/saureasigurări cu definitivat își poateredobândi dreptul de aprofesa:",
+        "question": "Undistribuitor în asigurări și/saureasigurări cu definitivat îșipoateredobândi dreptul de aprofesa:",
         "answers": [
             {
                 "text": "prin acumularea a 45 de ore de pregătire profesională continuă",
@@ -14697,7 +14720,7 @@
     },
     {
         "id": "489",
-        "question": "Undistribuitor în asigurări și/saureasigurări cu definitivat își poateredobândi dreptul de aprofesa:",
+        "question": "Undistribuitor în asigurări și/saureasigurări cu definitivat îșipoateredobândi dreptul de aprofesa:",
         "answers": [
             {
                 "text": "prin susținerea, în cel mai scurt timp, a unuinou examende definitivat",
@@ -14770,7 +14793,7 @@
         "question": "Privindnivelurile de dezvoltare etică ale indivizilor, indicați afirmația adevărată:",
         "answers": [
             {
-                "text": "include șinivelul 1, denumit pre-convențional, iar persoanele aflate în această categorie pun înbalanță, purrațional, ”beneficiile” uneipotențiale acțiunineetice, În raport cu sancțiunile iar, în situația încare balanța înclină în favoarea avantajelor, există o probabilitateridicată de a acționa în acelmod neetic",
+                "text": "include șinivelul 1, denumit pre-convențional, iar persoanele aflate în această categorie pun înbalanță, purrațional, ”beneficiile” uneipotențiale acțiunineetice, înraport cu sancțiunile iar, în situația încare balanța înclină în favoarea avantajelor, există o probabilitateridicată de a acționa în acelmod neetic",
                 "is_correct": true
             }
         ]
@@ -15237,45 +15260,25 @@
     }
 ];
 
-        // --- 2. DATA PROCESSING LOGIC ---
-        
+        // --- 2. LOGICĂ PROCESARE ---
         function processQuestions(rawData) {
-            // Logica de grupare a obiectelor care au același ID
             const grouped = rawData.reduce((acc, curr) => {
                 const qId = curr.id;
-                
                 if (!acc[qId]) {
-                    acc[qId] = {
-                        id: qId,
-                        text: curr.question,
-                        rawOptions: [] 
-                    };
+                    acc[qId] = { id: qId, text: curr.question, rawOptions: [] };
                 }
-                
-                // Adăugăm toate răspunsurile din obiectul curent la lista de opțiuni a întrebării
                 if (curr.answers && Array.isArray(curr.answers)) {
-                    curr.answers.forEach(ans => {
-                        acc[qId].rawOptions.push(ans);
-                    });
+                    curr.answers.forEach(ans => acc[qId].rawOptions.push(ans));
                 }
-
                 return acc;
             }, {});
 
-            // Transformăm obiectul grupat în formatul final pentru Quiz
             return Object.values(grouped).map(q => {
                 const options = q.rawOptions.map((opt, index) => {
-                    // Generăm ID-uri a, b, c automat
-                    const optId = String.fromCharCode(97 + index); // 97 = 'a'
-                    return {
-                        id: optId,
-                        text: opt.text,
-                        isCorrect: opt.is_correct
-                    };
+                    const optId = String.fromCharCode(97 + index); 
+                    return { id: optId, text: opt.text, isCorrect: opt.is_correct };
                 });
-
                 const correctOpt = options.find(o => o.isCorrect);
-                
                 return {
                     id: q.id,
                     text: q.text,
@@ -15285,117 +15288,225 @@
             });
         }
 
-        // --- 3. COMPONENTS ---
+        // --- 3. SUB-COMPONENTS ---
+
+        // Buton Dark Mode
+        function ThemeToggle({ isDark, toggleTheme }) {
+            return (
+                <button 
+                    onClick={toggleTheme}
+                    className="fixed top-4 right-4 z-50 w-12 h-12 rounded-full bg-white dark:bg-gray-800 text-gray-800 dark:text-yellow-400 shadow-lg border border-gray-200 dark:border-gray-700 flex items-center justify-center transition-all hover:scale-110"
+                    title={isDark ? "Mod Luminos" : "Mod Întunecat"}
+                >
+                    <i className={`ph-fill ${isDark ? 'ph-sun' : 'ph-moon'} text-2xl`}></i>
+                </button>
+            );
+        }
+
+        // Card Întrebare Reutilizabil
+        function QuestionCard({ 
+            question, 
+            index, 
+            selectedOption, 
+            onSelect, 
+            showFeedback, 
+            mode = 'exam' 
+        }) {
+            return (
+                <div className={`p-6 rounded-2xl shadow-sm border transition-all duration-300 ${
+                    mode === 'practice' 
+                    ? 'bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-700 mb-6' 
+                    : 'bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-700 h-full flex flex-col'
+                }`}>
+                    <div className="mb-4">
+                        <div className="flex items-center gap-2 mb-2">
+                            <span className="inline-block px-2 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 text-xs font-bold rounded">
+                                Întrebarea {index + 1}
+                            </span>
+                            <span className="text-xs text-gray-400 dark:text-gray-500">ID: {question.id}</span>
+                        </div>
+                        <h2 className="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-100 leading-snug">
+                            {question.text}
+                        </h2>
+                    </div>
+
+                    <div className="space-y-3 flex-grow">
+                        {question.options.map((opt) => {
+                            let btnClass = "relative w-full p-4 text-left rounded-xl border-2 transition-all duration-200 flex items-start gap-4 group ";
+                            const isSelected = selectedOption === opt.id;
+                            const isCorrect = opt.id === question.correctAnswer;
+                            
+                            if (showFeedback) {
+                                if (isCorrect) {
+                                    btnClass += "bg-green-50 dark:bg-green-900/20 border-green-500 text-green-900 dark:text-green-300";
+                                } else if (isSelected && !isCorrect) {
+                                    btnClass += "bg-red-50 dark:bg-red-900/20 border-red-500 text-red-900 dark:text-red-300";
+                                } else {
+                                    btnClass += "bg-gray-50 dark:bg-gray-800/50 border-gray-100 dark:border-gray-700 text-gray-400 dark:text-gray-500 opacity-60";
+                                }
+                            } else {
+                                if (isSelected) {
+                                    btnClass += "bg-blue-50 dark:bg-blue-900/20 border-blue-500 text-blue-900 dark:text-blue-100 shadow-md";
+                                } else {
+                                    btnClass += "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 text-gray-700 dark:text-gray-300 hover:shadow-md";
+                                }
+                            }
+
+                            return (
+                                <button 
+                                    key={opt.id}
+                                    onClick={() => onSelect(opt.id)}
+                                    disabled={showFeedback && mode === 'exam'} 
+                                    className={btnClass}
+                                >
+                                    <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold border transition-colors ${
+                                        showFeedback && isCorrect ? 'bg-green-500 text-white border-green-500' :
+                                        showFeedback && isSelected && !isCorrect ? 'bg-red-500 text-white border-red-500' :
+                                        isSelected ? 'bg-blue-600 text-white border-blue-600' :
+                                        'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 border-gray-300 dark:border-gray-600'
+                                    }`}>
+                                        {opt.id.toUpperCase()}
+                                    </div>
+                                    <span className="mt-1 flex-grow font-medium text-sm md:text-base leading-relaxed">{opt.text}</span>
+                                    
+                                    {showFeedback && (
+                                        <div className="w-6 flex-shrink-0 self-center">
+                                            {isCorrect && <i className="ph-fill ph-check-circle text-green-500 text-2xl"></i>}
+                                            {isSelected && !isCorrect && <i className="ph-fill ph-x-circle text-red-500 text-2xl"></i>}
+                                        </div>
+                                    )}
+                                </button>
+                            )
+                        })}
+                    </div>
+                </div>
+            );
+        }
+
+        // --- 4. SCREENS ---
 
         function SetupScreen({ totalAvailable, onStart }) {
             const [selectedCount, setSelectedCount] = useState(10);
             const [customCount, setCustomCount] = useState("");
             const [isCustom, setIsCustom] = useState(false);
+            const [mode, setMode] = useState('exam'); // 'exam' | 'practice'
 
             const handleStart = () => {
                 let countToStart = selectedCount;
-                
                 if (isCustom) {
                     const val = parseInt(customCount);
-                    if (!val || val <= 0) {
-                        alert("Te rugăm să introduci un număr valid mai mare ca 0.");
-                        return;
-                    }
-                    if (val > totalAvailable) {
-                         alert(`Numărul maxim de întrebări disponibile este ${totalAvailable}.`);
-                         return;
-                    }
+                    if (!val || val <= 0) return alert("Număr invalid.");
+                    if (val > totalAvailable) return alert(`Maxim disponibil: ${totalAvailable}`);
                     countToStart = val;
                 }
-                
-                onStart(countToStart);
+                onStart(countToStart, mode);
             };
 
             const presetOptions = [10, 20, 30, 40];
 
             return (
-                <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center fade-in bg-gray-50">
-                    <div className="bg-white p-8 rounded-2xl shadow-xl max-w-lg w-full border border-gray-100">
-                        <div className="mb-6 bg-blue-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto text-blue-600 shadow-sm">
-                            <i className="ph ph-exam text-4xl"></i>
+                <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center fade-in bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+                    <div className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl max-w-lg w-full border border-gray-100 dark:border-gray-700">
+                        <div className="mb-6 bg-blue-50 dark:bg-blue-900/30 w-20 h-20 rounded-full flex items-center justify-center mx-auto text-blue-600 dark:text-blue-400 shadow-sm">
+                            <i className="ph ph-student text-4xl"></i>
                         </div>
-                        <h1 className="text-3xl font-bold text-gray-800 mb-2">Simulator Examen</h1>
-                        <p className="text-gray-500 mb-8">
-                            Pregătire profesională <br/>
-                            <span className="text-xs font-semibold bg-gray-100 text-gray-600 px-2 py-1 rounded mt-1 inline-block">
-                                {totalAvailable} grile încărcate
+                        <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">Simulator Examen</h1>
+                        <p className="text-gray-500 dark:text-gray-400 mb-8">
+                            <span className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-sm font-semibold">
+                                {totalAvailable} grile disponibile
                             </span>
                         </p>
                         
-                        <div className="mb-8">
-                            <label className="block text-left text-sm font-bold text-gray-700 mb-3 ml-1">
-                                Câte întrebări dorești?
+                        {/* Selector Mod */}
+                        <div className="mb-6">
+                            <label className="block text-left text-sm font-bold text-gray-700 dark:text-gray-300 mb-3 ml-1">
+                                Alege Modul
                             </label>
-                            
-                            {/* Preset Buttons Grid */}
-                            <div className="grid grid-cols-3 gap-3 mb-4">
+                            <div className="flex bg-gray-100 dark:bg-gray-700 p-1 rounded-xl">
+                                <button 
+                                    onClick={() => setMode('exam')}
+                                    className={`flex-1 py-3 px-4 rounded-lg font-bold text-sm transition-all flex items-center justify-center gap-2 ${
+                                        mode === 'exam' 
+                                        ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-300 shadow-sm' 
+                                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
+                                    }`}
+                                >
+                                    <i className="ph-bold ph-cards"></i>
+                                    Examen (1 câte 1)
+                                </button>
+                                <button 
+                                    onClick={() => setMode('practice')}
+                                    className={`flex-1 py-3 px-4 rounded-lg font-bold text-sm transition-all flex items-center justify-center gap-2 ${
+                                        mode === 'practice' 
+                                        ? 'bg-white dark:bg-gray-600 text-green-600 dark:text-green-300 shadow-sm' 
+                                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
+                                    }`}
+                                >
+                                    <i className="ph-bold ph-list-checks"></i>
+                                    Practică (Listă)
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* Selector Nr Intrebari */}
+                        <div className="mb-8">
+                            <label className="block text-left text-sm font-bold text-gray-700 dark:text-gray-300 mb-3 ml-1">
+                                Număr Întrebări
+                            </label>
+                            <div className="grid grid-cols-3 gap-3 mb-3">
                                 {presetOptions.map(num => (
                                     <button 
                                         key={num}
                                         onClick={() => { setSelectedCount(num); setIsCustom(false); }}
-                                        className={`py-3 px-2 rounded-xl border font-medium transition-all duration-200 ${
+                                        className={`py-3 rounded-xl border font-medium transition-all ${
                                             !isCustom && selectedCount === num 
-                                            ? 'bg-blue-600 text-white border-blue-600 shadow-md transform scale-[1.02]' 
-                                            : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50 hover:border-gray-300'
+                                            ? 'bg-blue-600 border-blue-600 text-white' 
+                                            : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                                         }`}
                                     >
                                         {num}
                                     </button>
                                 ))}
-                                
-                                {/* Button "Toate" */}
                                 <button 
                                     onClick={() => { setSelectedCount(totalAvailable); setIsCustom(false); }}
-                                    className={`py-3 px-2 rounded-xl border font-medium transition-all duration-200 col-span-2 ${
+                                    className={`py-3 rounded-xl border font-medium transition-all col-span-2 ${
                                         !isCustom && selectedCount === totalAvailable 
-                                        ? 'bg-blue-600 text-white border-blue-600 shadow-md transform scale-[1.02]' 
-                                        : 'bg-white text-gray-600 border-gray-200 hover:bg-gray-50 hover:border-gray-300'
+                                        ? 'bg-blue-600 border-blue-600 text-white' 
+                                        : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                                     }`}
                                 >
                                     Toate
                                 </button>
                             </div>
-
-                            {/* Custom Input Area */}
+                            
+                            {/* Custom Input */}
                             <div 
                                 onClick={() => setIsCustom(true)}
-                                className={`relative flex items-center border rounded-xl p-1 transition-all duration-200 cursor-text ${
+                                className={`flex items-center border rounded-xl p-1 transition-all ${
                                     isCustom 
-                                    ? 'border-blue-600 ring-2 ring-blue-100 bg-white' 
-                                    : 'border-gray-200 bg-gray-50 hover:border-gray-300'
+                                    ? 'border-blue-600 ring-2 ring-blue-100 dark:ring-blue-900 bg-white dark:bg-gray-800' 
+                                    : 'border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700'
                                 }`}
                             >
-                                <div className={`px-4 py-2 rounded-lg font-medium text-sm transition-colors ${isCustom ? 'text-blue-600 bg-blue-50' : 'text-gray-500'}`}>
-                                    Custom
-                                </div>
+                                <span className={`px-4 py-2 rounded-lg font-medium text-sm ${isCustom ? 'text-blue-600 bg-blue-50 dark:bg-blue-900/20' : 'text-gray-500'}`}>Custom</span>
                                 <input 
                                     type="number" 
-                                    placeholder="Nr. întrebări..."
+                                    placeholder="..."
                                     value={customCount}
                                     onChange={(e) => setCustomCount(e.target.value)}
                                     onFocus={() => setIsCustom(true)}
-                                    className="flex-1 bg-transparent outline-none px-3 py-2 text-gray-800 font-semibold placeholder-gray-400"
+                                    className="flex-1 bg-transparent outline-none px-3 py-2 text-gray-800 dark:text-white font-semibold"
                                     min="1"
                                     max={totalAvailable}
                                 />
-                                {isCustom && (
-                                    <div className="absolute right-3 text-blue-600 animate-pulse">
-                                        <i className="ph-fill ph-pencil-simple"></i>
-                                    </div>
-                                )}
                             </div>
                         </div>
 
                         <button 
                             onClick={handleStart}
-                            className="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-blue-200 hover:shadow-blue-300 transform transition active:scale-[0.98] flex items-center justify-center gap-2 text-lg"
+                            className="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-lg transform transition active:scale-[0.98] flex items-center justify-center gap-2 text-lg"
                         >
-                            <span>Începe Testul</span>
+                            <span>Începe</span>
                             <i className="ph-bold ph-play"></i>
                         </button>
                     </div>
@@ -15403,12 +15514,13 @@
             );
         }
 
-        function QuizScreen({ questions, onFinish }) {
+        // --- EXAM MODE SCREEN ---
+        function ExamModeScreen({ questions, onFinish }) {
             const [currentIndex, setCurrentIndex] = useState(0);
-            const [answers, setAnswers] = useState({}); 
+            const [answers, setAnswers] = useState({});
             const [isAnswered, setIsAnswered] = useState(false);
             const [score, setScore] = useState({ correct: 0, wrong: 0 });
-            
+
             useEffect(() => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
             }, [currentIndex]);
@@ -15417,9 +15529,7 @@
 
             const handleAnswer = (optionId) => {
                 if (isAnswered) return;
-
                 const isCorrect = optionId === currentQ.correctAnswer;
-                
                 setAnswers(prev => ({ ...prev, [currentQ.id]: optionId }));
                 setScore(prev => ({
                     correct: prev.correct + (isCorrect ? 1 : 0),
@@ -15440,101 +15550,54 @@
             const progress = ((currentIndex + 1) / questions.length) * 100;
 
             return (
-                <div className="min-h-screen flex flex-col max-w-3xl mx-auto p-4 md:p-6 fade-in pb-24">
+                <div className="min-h-screen flex flex-col max-w-3xl mx-auto p-4 md:p-6 fade-in pb-24 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
                     {/* Header */}
-                    <div className="sticky top-0 z-10 bg-[#f3f4f6] pt-4 pb-4 mb-2">
-                        <div className="flex justify-between items-center mb-3 bg-white p-3 rounded-xl shadow-sm border border-gray-100">
-                            <div className="flex flex-col">
+                    <div className="sticky top-0 z-10 bg-gray-50 dark:bg-gray-900 pt-2 pb-4 mb-2">
+                        <div className="flex justify-between items-center mb-3 bg-white dark:bg-gray-800 p-3 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                            <div>
                                 <span className="text-xs text-gray-400 font-bold uppercase tracking-wider">Progres</span>
-                                <span className="text-sm font-bold text-gray-700">{currentIndex + 1} <span className="text-gray-400 font-normal">/ {questions.length}</span></span>
+                                <div className="text-sm font-bold text-gray-700 dark:text-gray-200">
+                                    {currentIndex + 1} <span className="text-gray-400 dark:text-gray-500 font-normal">/ {questions.length}</span>
+                                </div>
                             </div>
-                            
                             <div className="flex gap-3">
-                                <div className="flex flex-col items-center bg-green-50 px-3 py-1 rounded-lg border border-green-100">
-                                    <span className="text-[10px] font-bold text-green-600 uppercase">Corect</span>
-                                    <span className="text-lg font-bold text-green-700 leading-none">{score.correct}</span>
+                                <div className="bg-green-50 dark:bg-green-900/30 px-3 py-1 rounded-lg border border-green-100 dark:border-green-800 text-center">
+                                    <div className="text-[10px] font-bold text-green-600 dark:text-green-400 uppercase">Corect</div>
+                                    <div className="text-lg font-bold text-green-700 dark:text-green-300 leading-none">{score.correct}</div>
                                 </div>
-                                <div className="flex flex-col items-center bg-red-50 px-3 py-1 rounded-lg border border-red-100">
-                                    <span className="text-[10px] font-bold text-red-600 uppercase">Greșit</span>
-                                    <span className="text-lg font-bold text-red-700 leading-none">{score.wrong}</span>
+                                <div className="bg-red-50 dark:bg-red-900/30 px-3 py-1 rounded-lg border border-red-100 dark:border-red-800 text-center">
+                                    <div className="text-[10px] font-bold text-red-600 dark:text-red-400 uppercase">Greșit</div>
+                                    <div className="text-lg font-bold text-red-700 dark:text-red-300 leading-none">{score.wrong}</div>
                                 </div>
                             </div>
                         </div>
-                        
-                        <div className="w-full bg-gray-200 rounded-full h-2 overflow-hidden shadow-inner">
-                            <div className="bg-blue-600 h-2 rounded-full transition-all duration-500 ease-out" style={{ width: `${progress}%` }}></div>
+                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
+                            <div className="bg-blue-600 h-2 rounded-full transition-all duration-500" style={{ width: `${progress}%` }}></div>
                         </div>
                     </div>
 
-                    {/* Question Card */}
-                    <div className="bg-white p-6 md:p-8 rounded-2xl shadow-lg border border-gray-100 flex-grow flex flex-col">
-                        <div className="mb-6">
-                            <span className="inline-block px-3 py-1 bg-gray-100 text-gray-500 text-xs font-bold rounded-full mb-3">
-                                ID: {currentQ.id}
-                            </span>
-                            <h2 className="text-xl md:text-2xl font-bold text-gray-800 leading-snug">
-                                {currentQ.text}
-                            </h2>
-                        </div>
+                    <QuestionCard 
+                        question={currentQ}
+                        index={currentIndex}
+                        selectedOption={answers[currentQ.id]}
+                        onSelect={handleAnswer}
+                        showFeedback={isAnswered}
+                        mode="exam"
+                    />
 
-                        <div className="space-y-3">
-                            {currentQ.options.map((opt) => {
-                                let btnClass = "relative w-full p-4 text-left rounded-xl border-2 transition-all duration-200 flex items-start gap-4 group overflow-hidden ";
-                                const isSelected = answers[currentQ.id] === opt.id;
-                                const isCorrect = opt.id === currentQ.correctAnswer;
-                                
-                                if (isAnswered) {
-                                    if (isCorrect) {
-                                        btnClass += "bg-green-50 border-green-500 text-green-900 shadow-sm";
-                                    } else if (isSelected && !isCorrect) {
-                                        btnClass += "bg-red-50 border-red-500 text-red-900 shadow-sm";
-                                    } else {
-                                        btnClass += "bg-gray-50 border-gray-100 text-gray-400 opacity-60 grayscale";
-                                    }
-                                } else {
-                                    btnClass += "bg-white border-gray-100 hover:border-blue-400 hover:bg-blue-50 text-gray-700 shadow-sm hover:shadow-md";
-                                }
-
-                                return (
-                                    <button 
-                                        key={opt.id}
-                                        onClick={() => handleAnswer(opt.id)}
-                                        disabled={isAnswered}
-                                        className={btnClass}
-                                    >
-                                        <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold border transition-colors ${
-                                            isAnswered && isCorrect ? 'bg-green-500 text-white border-green-500' :
-                                            isAnswered && isSelected && !isCorrect ? 'bg-red-500 text-white border-red-500' :
-                                            'bg-gray-100 text-gray-500 border-gray-200 group-hover:bg-blue-500 group-hover:text-white group-hover:border-blue-500'
-                                        }`}>
-                                            {opt.id.toUpperCase()}
-                                        </div>
-
-                                        <span className="mt-1 flex-grow font-medium text-base leading-relaxed">{opt.text}</span>
-                                        
-                                        <div className="w-6 flex-shrink-0 self-center">
-                                            {isAnswered && isCorrect && <i className="ph-fill ph-check-circle text-green-500 text-2xl animate-bounce"></i>}
-                                            {isAnswered && isSelected && !isCorrect && <i className="ph-fill ph-x-circle text-red-500 text-2xl animate-pulse"></i>}
-                                        </div>
-                                    </button>
-                                )
-                            })}
-                        </div>
-                    </div>
-
-                    {/* Footer Actions */}
-                    <div className="fixed bottom-0 left-0 w-full bg-white/80 backdrop-blur-md border-t border-gray-200 p-4 flex justify-center z-20">
+                    {/* Footer */}
+                    <div className="fixed bottom-0 left-0 w-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-md border-t border-gray-200 dark:border-gray-700 p-4 flex justify-center z-20">
                         <div className="w-full max-w-3xl">
                             {isAnswered ? (
                                 <button 
                                     onClick={nextQuestion}
-                                    className="w-full py-3.5 bg-gray-900 text-white font-bold rounded-xl shadow-lg hover:bg-gray-800 transition transform active:scale-[0.98] flex items-center justify-center gap-2 fade-in"
+                                    className="w-full py-3.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold rounded-xl shadow-lg transition transform active:scale-[0.98] flex items-center justify-center gap-2"
                                 >
-                                    <span>{currentIndex < questions.length - 1 ? 'Următoarea Întrebare' : 'Vezi Rezultate'}</span>
+                                    <span>{currentIndex < questions.length - 1 ? 'Următoarea' : 'Vezi Rezultate'}</span>
                                     <i className="ph-bold ph-arrow-right"></i>
                                 </button>
                             ) : (
-                                <div className="text-center text-gray-400 text-sm font-medium py-2">
+                                <div className="text-center text-gray-400 dark:text-gray-500 text-sm font-medium py-2">
                                     Alege un răspuns pentru a continua
                                 </div>
                             )}
@@ -15544,25 +15607,132 @@
             );
         }
 
+        // --- PRACTICE MODE SCREEN (UPDATED) ---
+        function PracticeModeScreen({ questions, onBackToMenu }) {
+            const [answers, setAnswers] = useState({});
+            const [isSubmitted, setIsSubmitted] = useState(false);
+            
+            const handleSelect = (qId, optId) => {
+                if (isSubmitted) return; // Prevent changing answers after submit
+                setAnswers(prev => ({ ...prev, [qId]: optId }));
+            };
+
+            const handleSubmit = () => {
+                if (!isSubmitted) {
+                    if (Object.keys(answers).length < questions.length) {
+                        if(!confirm("Nu ai răspuns la toate întrebările. Sigur vrei să afișezi rezultatele?")) return;
+                    }
+                    setIsSubmitted(true);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    onBackToMenu();
+                }
+            };
+
+            const progress = Object.keys(answers).length;
+            const progressPercent = (progress / questions.length) * 100;
+
+            // Calculate simple stats for header (only when submitted)
+            const stats = useMemo(() => {
+                if (!isSubmitted) return null;
+                let correct = 0;
+                questions.forEach(q => {
+                    if (answers[q.id] === q.correctAnswer) correct++;
+                });
+                return { correct, total: questions.length };
+            }, [isSubmitted, answers, questions]);
+
+            return (
+                <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+                    {/* Sticky Header Progress */}
+                    <div className="sticky top-0 z-30 bg-white/80 dark:bg-gray-800/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 px-4 py-3 shadow-sm">
+                        <div className="max-w-3xl mx-auto flex items-center justify-between">
+                            <div className="flex flex-col">
+                                {isSubmitted ? (
+                                    <>
+                                        <span className="text-xs font-bold text-green-600 dark:text-green-400 uppercase">Rezultat</span>
+                                        <span className="text-sm font-bold text-gray-800 dark:text-white">
+                                            {stats.correct} / {stats.total} Corecte
+                                        </span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <span className="text-xs font-bold text-gray-400 uppercase">Răspunse</span>
+                                        <span className="text-sm font-bold text-gray-800 dark:text-white">
+                                            {progress} <span className="text-gray-400 font-normal">/ {questions.length}</span>
+                                        </span>
+                                    </>
+                                )}
+                            </div>
+                            <div className="w-32 md:w-48 bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
+                                <div className={`h-2.5 rounded-full transition-all duration-300 ${isSubmitted ? 'bg-blue-600' : 'bg-green-500'}`} style={{ width: isSubmitted ? '100%' : `${progressPercent}%` }}></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Scrollable List */}
+                    <div className="max-w-3xl mx-auto p-4 md:p-6 pb-32">
+                        {questions.map((q, idx) => (
+                            <QuestionCard 
+                                key={q.id}
+                                question={q}
+                                index={idx}
+                                selectedOption={answers[q.id]}
+                                onSelect={(optId) => handleSelect(q.id, optId)}
+                                showFeedback={isSubmitted} 
+                                mode="practice"
+                            />
+                        ))}
+                    </div>
+
+                    {/* Sticky Footer Action */}
+                    <div className="fixed bottom-0 left-0 w-full bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-4 shadow-lg z-30">
+                        <div className="max-w-3xl mx-auto">
+                            <button 
+                                onClick={handleSubmit}
+                                className={`w-full py-4 text-white font-bold rounded-xl shadow-lg transform transition active:scale-[0.98] flex items-center justify-center gap-2 ${
+                                    isSubmitted 
+                                    ? 'bg-gray-800 hover:bg-gray-900 dark:bg-gray-700 dark:hover:bg-gray-600' 
+                                    : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700'
+                                }`}
+                            >
+                                {isSubmitted ? (
+                                    <>
+                                        <i className="ph-bold ph-arrow-counter-clockwise text-xl"></i>
+                                        <span>Test Nou / Meniu</span>
+                                    </>
+                                ) : (
+                                    <>
+                                        <i className="ph-bold ph-check-circle text-xl"></i>
+                                        <span>Verifică Răspunsurile</span>
+                                    </>
+                                )}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // --- RESULT SCREEN ---
         function ResultScreen({ score, total, onRestart }) {
             const percentage = total > 0 ? Math.round((score.correct / total) * 100) : 0;
             let message = "";
             let colorClass = "";
-            let icon = "";
             
-            if (percentage >= 90) { message = "Excelent!"; colorClass = "text-green-600"; icon="ph-trophy"; }
-            else if (percentage >= 70) { message = "Bun!"; colorClass = "text-blue-600"; icon="ph-thumbs-up"; }
-            else if (percentage >= 50) { message = "Satisfăcător"; colorClass = "text-yellow-600"; icon="ph-meh"; }
-            else { message = "Mai încearcă"; colorClass = "text-red-600"; icon="ph-warning-circle"; }
+            if (percentage >= 90) { message = "Excelent!"; colorClass = "text-green-600 dark:text-green-400"; }
+            else if (percentage >= 70) { message = "Bun!"; colorClass = "text-blue-600 dark:text-blue-400"; }
+            else if (percentage >= 50) { message = "Satisfăcător"; colorClass = "text-yellow-600 dark:text-yellow-400"; }
+            else { message = "Mai încearcă"; colorClass = "text-red-600 dark:text-red-400"; }
 
             return (
-                <div className="min-h-screen flex items-center justify-center p-4 fade-in bg-gray-50">
-                    <div className="bg-white p-8 md:p-12 rounded-3xl shadow-2xl max-w-lg w-full text-center border border-gray-100">
+                <div className="min-h-screen flex items-center justify-center p-4 fade-in bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+                    <div className="bg-white dark:bg-gray-800 p-8 md:p-12 rounded-3xl shadow-2xl max-w-lg w-full text-center border border-gray-100 dark:border-gray-700">
                         
                         <div className="mb-8 relative inline-flex items-center justify-center">
                              <svg className="w-48 h-48 transform -rotate-90 drop-shadow-md">
                                 <circle
-                                    className="text-gray-100"
+                                    className="text-gray-100 dark:text-gray-700"
                                     strokeWidth="16"
                                     stroke="currentColor"
                                     fill="transparent"
@@ -15591,27 +15761,24 @@
                         </div>
 
                         <div className="mb-8">
-                            <div className={`inline-flex items-center gap-2 text-2xl font-bold mb-2 ${colorClass}`}>
-                                <i className={`ph-fill ${icon}`}></i>
-                                <span>{message}</span>
-                            </div>
-                            <p className="text-gray-500">Ai finalizat testul cu succes.</p>
+                            <h2 className={`text-3xl font-bold mb-2 ${colorClass}`}>{message}</h2>
+                            <p className="text-gray-500 dark:text-gray-400">Test finalizat.</p>
                         </div>
 
                         <div className="grid grid-cols-2 gap-4 mb-8">
-                            <div className="p-5 bg-green-50 rounded-2xl border border-green-100 shadow-sm">
-                                <p className="text-green-600 font-bold text-xs uppercase tracking-wider mb-1">Răspunsuri Corecte</p>
-                                <p className="text-3xl font-bold text-green-700">{score.correct}</p>
+                            <div className="p-5 bg-green-50 dark:bg-green-900/20 rounded-2xl border border-green-100 dark:border-green-800">
+                                <p className="text-green-600 dark:text-green-400 font-bold text-xs uppercase tracking-wider mb-1">Corecte</p>
+                                <p className="text-3xl font-bold text-green-700 dark:text-green-300">{score.correct}</p>
                             </div>
-                            <div className="p-5 bg-red-50 rounded-2xl border border-red-100 shadow-sm">
-                                <p className="text-red-600 font-bold text-xs uppercase tracking-wider mb-1">Răspunsuri Greșite</p>
-                                <p className="text-3xl font-bold text-red-700">{score.wrong}</p>
+                            <div className="p-5 bg-red-50 dark:bg-red-900/20 rounded-2xl border border-red-100 dark:border-red-800">
+                                <p className="text-red-600 dark:text-red-400 font-bold text-xs uppercase tracking-wider mb-1">Greșite</p>
+                                <p className="text-3xl font-bold text-red-700 dark:text-red-300">{score.wrong}</p>
                             </div>
                         </div>
 
                         <button 
                             onClick={onRestart}
-                            className="w-full py-4 bg-white border-2 border-gray-200 text-gray-700 font-bold rounded-xl hover:bg-gray-50 hover:border-blue-500 hover:text-blue-600 transition flex items-center justify-center gap-2 group"
+                            className="w-full py-4 bg-white dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-white font-bold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 transition flex items-center justify-center gap-2 group"
                         >
                             <i className="ph-bold ph-arrow-counter-clockwise group-hover:-rotate-90 transition-transform duration-300"></i>
                             <span>Începe un test nou</span>
@@ -15621,23 +15788,42 @@
             );
         }
 
+        // --- MAIN APP ---
         function App() {
             const [gameState, setGameState] = useState('setup'); 
+            const [gameMode, setGameMode] = useState('exam');
             const [questionsPool, setQuestionsPool] = useState([]);
             const [activeQuestions, setActiveQuestions] = useState([]);
             const [finalScore, setFinalScore] = useState(null);
+            
+            // Dark Mode State
+            const [isDark, setIsDark] = useState(false);
 
             useEffect(() => {
                 const processed = processQuestions(RAW_DATA);
                 setQuestionsPool(processed);
+                
+                // Check system preference
+                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                    setIsDark(true);
+                }
             }, []);
 
-            const startGame = (count) => {
+            useEffect(() => {
+                if (isDark) {
+                    document.documentElement.classList.add('dark');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                }
+            }, [isDark]);
+
+            const startGame = (count, mode) => {
                 const shuffled = [...questionsPool].sort(() => 0.5 - Math.random());
                 const safeCount = Math.min(count, questionsPool.length);
                 const selected = shuffled.slice(0, safeCount);
                 
                 setActiveQuestions(selected);
+                setGameMode(mode);
                 setGameState('playing');
             };
 
@@ -15653,19 +15839,30 @@
             };
 
             return (
-                <div>
+                <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+                    <ThemeToggle isDark={isDark} toggleTheme={() => setIsDark(!isDark)} />
+                    
                     {gameState === 'setup' && (
                         <SetupScreen 
                             totalAvailable={questionsPool.length} 
                             onStart={startGame} 
                         />
                     )}
-                    {gameState === 'playing' && (
-                        <QuizScreen 
+                    
+                    {gameState === 'playing' && gameMode === 'exam' && (
+                        <ExamModeScreen 
                             questions={activeQuestions} 
                             onFinish={finishGame} 
                         />
                     )}
+
+                    {gameState === 'playing' && gameMode === 'practice' && (
+                        <PracticeModeScreen 
+                            questions={activeQuestions} 
+                            onBackToMenu={restartGame} 
+                        />
+                    )}
+                    
                     {gameState === 'finished' && (
                         <ResultScreen 
                             score={finalScore} 
