@@ -1,2 +1,6 @@
 # pregatire-examen-ISF-asigurari
 Acesta este un repo ce contine un PDF cu toate intrebarile ISF + un site de pregatire din cel 507 intrebari de tip simulare examen. Contine PDF ul original de la ISF, codul de la site si un script custom in python pentru conversii in json si HTML a conținutului PDF ului/DOCX ului
+
+## Acest este link-ul de la site ul de pregatire : https://firedmosquito831.github.io/pregatire-examen-ISF-asigurari/
+
+## De asemenea, exista si o aplicatie de android cu exact aceeasi functionalitate ce se poate gasi la release-uri sau in fisiere.
