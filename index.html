@@ -2,30 +2,20 @@
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     
     <!-- SEO Optimization -->
-    <title>Grile Asigurări - Simulator Examen ISF & Pregătire Profesională</title>
-    <meta name="description" content="Simulator complet pentru examenul de certificare în asigurări (ISF). Pregătește-te eficient cu sute de grile, teste și întrebări actualizate din domeniul asigurărilor. Mod practică și examen.">
-    <meta name="keywords" content="asigurări, examen ISF, pregatire profesionala, grile asigurari, test intrebari, intrebari asigurări, simulator examen, certificare distribuitor asigurari, ISF, teste grila, examen agent asigurari, RCA, CASCO, legislatie asigurari">
-    <meta name="author" content="Simulator Grile Asigurări">
-    <meta name="robots" content="index, follow">
-    <meta name="language" content="Romanian">
-    
-    <!-- Open Graph / Social Media -->
-    <meta property="og:title" content="Grile Asigurări - Simulator Examen ISF">
-    <meta property="og:description" content="Testează-ți cunoștințele pentru examenul ISF cu simulatorul nostru de grile. Întrebări actualizate și moduri de învățare flexibile.">
-    <meta property="og:type" content="website">
-    <meta property="og:locale" content="ro_RO">
+    <title>Simulator Examen ISF - Alexandru Amadeus</title>
+    <meta name="description" content="Platformă de pregătire pentru examenul de certificare în asigurări (ISF). Simulează examenul oficial cu setul complet de grile.">
     
     <!-- React & ReactDOM -->
     <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     
-    <!-- Babel for JSX -->
+    <!-- Babel -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     
-    <!-- Tailwind CSS with Dark Mode Config -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -33,14 +23,9 @@
             theme: {
                 extend: {
                     colors: {
-                        dark: {
-                            bg: '#111827',
-                            card: '#1f2937',
-                            text: '#f9fafb',
-                            secondary: '#9ca3af',
-                            border: '#374151'
-                        }
-                    }
+                        dark: { bg: '#111827', card: '#1f2937', text: '#f9fafb', border: '#374151' }
+                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
                 }
             }
         }
@@ -50,27 +35,27 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-        body { font-family: 'Inter', sans-serif; }
-        .fade-in { animation: fadeIn 0.3s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        .fade-in { animation: fadeIn 0.2s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
         
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
+        /* Compact Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
         .dark ::-webkit-scrollbar-thumb { background: #4b5563; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
     </style>
 </head>
-<body class="transition-colors duration-300">
+<body class="transition-colors duration-300 bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100">
     <div id="root"></div>
 
     <script type="text/babel">
         const { useState, useEffect, useMemo, useRef } = React;
 
-        // --- 1. DATA INPUT (Structura JSON corectă) ---
-        const RAW_DATA = [
+        // --- 1. DATA INPUT ---
+        // Aici este eșantionul de date. Asigură-te că introduci TOATE cele 507 întrebări în formatul corect JSON aici.
+        const RAW_DATA = [[
     {
         "id": 1,
         "question": "Care dintre următoarele afirmații se referă la un risc asigurabil?",
@@ -9193,29 +9178,19 @@
             }
         ]
     }
-];
+]
+        ];
 
         // --- 2. LOGICĂ PROCESARE ---
         function processQuestions(rawData) {
-            // Mapăm direct array-ul de întrebări.
+            if (!rawData) return [];
             return rawData.map(q => {
                 const options = q.answers.map((ans, index) => {
-                    // Generăm ID-ul opțiunii ('a', 'b', 'c') pe baza indexului
                     const optId = String.fromCharCode(97 + index); 
-                    
-                    // Curățăm textul: eliminăm prefixul "a) ", "b) " etc. dacă există,
-                    // pentru a nu-l dubla în interfață (care adaugă propriile bule cu litere).
                     const cleanText = ans.text.replace(/^[a-zA-Z]\)\s*/, '');
-
-                    return { 
-                        id: optId, 
-                        text: cleanText, 
-                        isCorrect: ans.isCorrect // Folosim 'isCorrect' conform noului JSON
-                    };
+                    return { id: optId, text: cleanText, isCorrect: ans.isCorrect };
                 });
-
                 const correctOpt = options.find(o => o.isCorrect);
-                
                 return {
                     id: q.id,
                     text: q.question,
@@ -9225,51 +9200,56 @@
             });
         }
 
-        // --- 3. SUB-COMPONENTS ---
+        // --- 3. UI COMPONENTS ---
 
-        // Buton Dark Mode
         function ThemeToggle({ isDark, toggleTheme }) {
             return (
                 <button 
                     onClick={toggleTheme}
-                    className="fixed top-4 right-4 z-50 w-12 h-12 rounded-full bg-white dark:bg-gray-800 text-gray-800 dark:text-yellow-400 shadow-lg border border-gray-200 dark:border-gray-700 flex items-center justify-center transition-all hover:scale-110"
+                    className="fixed top-3 right-3 z-50 p-2 rounded-full bg-white dark:bg-gray-800 text-gray-600 dark:text-yellow-400 shadow-md border border-gray-200 dark:border-gray-700 hover:scale-105 transition-transform"
                     title={isDark ? "Mod Luminos" : "Mod Întunecat"}
                 >
-                    <i className={`ph-fill ${isDark ? 'ph-sun' : 'ph-moon'} text-2xl`}></i>
+                    <i className={`ph-fill ${isDark ? 'ph-sun' : 'ph-moon'} text-xl`}></i>
                 </button>
             );
         }
 
-        // Card Întrebare Reutilizabil
-        function QuestionCard({ 
-            question, 
-            index, 
-            selectedOption, 
-            onSelect, 
-            showFeedback, 
-            mode = 'exam' 
-        }) {
+        function ExitButton({ onExit }) {
             return (
-                <div className={`p-6 rounded-2xl shadow-sm border transition-all duration-300 ${
+                <button 
+                    onClick={onExit}
+                    className="fixed top-3 left-3 z-50 p-2 rounded-full bg-white dark:bg-gray-800 text-red-500 shadow-md border border-gray-200 dark:border-gray-700 hover:bg-red-50 dark:hover:bg-red-900/30 transition-colors"
+                    title="Ieșire la Meniu"
+                >
+                    <i className="ph-bold ph-x text-xl"></i>
+                </button>
+            );
+        }
+
+        function QuestionCard({ question, index, selectedOption, onSelect, showFeedback, mode = 'exam' }) {
+            if (!question) return null;
+
+            return (
+                <div className={`p-4 md:p-5 rounded-xl shadow-sm border transition-all duration-200 ${
                     mode === 'practice' 
-                    ? 'bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-700 mb-6' 
-                    : 'bg-white dark:bg-gray-800 border-gray-100 dark:border-gray-700 h-full flex flex-col'
+                    ? 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 mb-4' 
+                    : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 flex flex-col h-full'
                 }`}>
-                    <div className="mb-4">
-                        <div className="flex items-center gap-2 mb-2">
-                            <span className="inline-block px-2 py-0.5 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 text-xs font-bold rounded">
+                    <div className="mb-3">
+                        <div className="flex items-center gap-2 mb-1.5">
+                            <span className="inline-block px-1.5 py-0.5 bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-200 text-[10px] font-bold rounded uppercase tracking-wide">
                                 Întrebarea {index + 1}
                             </span>
-                            <span className="text-xs text-gray-400 dark:text-gray-500">ID: {question.id}</span>
+                            <span className="text-[10px] text-gray-400 dark:text-gray-500">ID: {question.id}</span>
                         </div>
-                        <h2 className="text-lg md:text-xl font-bold text-gray-800 dark:text-gray-100 leading-snug">
+                        <h2 className="text-base md:text-lg font-bold text-gray-800 dark:text-gray-100 leading-tight">
                             {question.text}
                         </h2>
                     </div>
 
-                    <div className="space-y-3 flex-grow">
+                    <div className="space-y-2 flex-grow">
                         {question.options.map((opt) => {
-                            let btnClass = "relative w-full p-4 text-left rounded-xl border-2 transition-all duration-200 flex items-start gap-4 group ";
+                            let btnClass = "relative w-full p-3 text-left rounded-lg border transition-all duration-200 flex items-start gap-3 group ";
                             const isSelected = selectedOption === opt.id;
                             const isCorrect = opt.id === question.correctAnswer;
                             
@@ -9283,9 +9263,9 @@
                                 }
                             } else {
                                 if (isSelected) {
-                                    btnClass += "bg-blue-50 dark:bg-blue-900/20 border-blue-500 text-blue-900 dark:text-blue-100 shadow-md";
+                                    btnClass += "bg-blue-50 dark:bg-blue-900/20 border-blue-500 text-blue-900 dark:text-blue-100 shadow-sm ring-1 ring-blue-500/20";
                                 } else {
-                                    btnClass += "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 text-gray-700 dark:text-gray-300 hover:shadow-md";
+                                    btnClass += "bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700";
                                 }
                             }
 
@@ -9296,20 +9276,20 @@
                                     disabled={showFeedback && mode === 'exam'} 
                                     className={btnClass}
                                 >
-                                    <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold border transition-colors ${
+                                    <div className={`flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold border transition-colors ${
                                         showFeedback && isCorrect ? 'bg-green-500 text-white border-green-500' :
                                         showFeedback && isSelected && !isCorrect ? 'bg-red-500 text-white border-red-500' :
                                         isSelected ? 'bg-blue-600 text-white border-blue-600' :
                                         'bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 border-gray-300 dark:border-gray-600'
                                     }`}>
-                                        {opt.id.toUpperCase()}
+                                            {opt.id.toUpperCase()}
                                     </div>
-                                    <span className="mt-1 flex-grow font-medium text-sm md:text-base leading-relaxed">{opt.text}</span>
+                                    <span className="mt-0.5 flex-grow font-medium text-sm leading-snug">{opt.text}</span>
                                     
                                     {showFeedback && (
-                                        <div className="w-6 flex-shrink-0 self-center">
-                                            {isCorrect && <i className="ph-fill ph-check-circle text-green-500 text-2xl"></i>}
-                                            {isSelected && !isCorrect && <i className="ph-fill ph-x-circle text-red-500 text-2xl"></i>}
+                                        <div className="w-5 flex-shrink-0 self-center">
+                                            {isCorrect && <i className="ph-fill ph-check-circle text-green-500 text-xl"></i>}
+                                            {isSelected && !isCorrect && <i className="ph-fill ph-x-circle text-red-500 text-xl"></i>}
                                         </div>
                                     )}
                                 </button>
@@ -9322,219 +9302,268 @@
 
         // --- 4. SCREENS ---
 
-        function SetupScreen({ totalAvailable, onStart }) {
-            const [selectedCount, setSelectedCount] = useState(10);
+        function SetupScreen({ totalPool, onStart, hasSavedSession, onResume }) {
+            const [selectedCount, setSelectedCount] = useState(40);
             const [customCount, setCustomCount] = useState("");
             const [isCustom, setIsCustom] = useState(false);
-            const [mode, setMode] = useState('exam'); // 'exam' | 'practice'
+            const [mode, setMode] = useState('exam'); 
+            const [selectedPart, setSelectedPart] = useState('all');
+
+            // Calculăm câte întrebări sunt disponibile în funcție de partea selectată
+            const availableForCurrentPart = useMemo(() => {
+                if (selectedPart === 'all') return totalPool.length;
+                if (selectedPart === 'part1') return totalPool.filter(q => q.id >= 1 && q.id <= 169).length;
+                if (selectedPart === 'part2') return totalPool.filter(q => q.id >= 170 && q.id <= 349).length;
+                if (selectedPart === 'part3') return totalPool.filter(q => q.id >= 350 && q.id <= 507).length;
+                return 0;
+            }, [selectedPart, totalPool]);
 
             const handleStart = () => {
                 let countToStart = selectedCount;
                 if (isCustom) {
                     const val = parseInt(customCount);
                     if (!val || val <= 0) return alert("Număr invalid.");
-                    if (val > totalAvailable) return alert(`Maxim disponibil: ${totalAvailable}`);
+                    if (val > availableForCurrentPart) return alert(`Maxim disponibil pentru selecția curentă: ${availableForCurrentPart}`);
                     countToStart = val;
+                } else {
+                    // Dacă selectez "40" dar în partea asta sunt mai puține (deși improbabil la ISF, dar safety check), iau minimul
+                    countToStart = Math.min(selectedCount, availableForCurrentPart);
                 }
-                onStart(countToStart, mode);
+                
+                onStart(countToStart, mode, selectedPart);
             };
 
             const presetOptions = [10, 20, 30, 40];
 
             return (
-                <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center fade-in bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-                    <div className="bg-white dark:bg-gray-800 p-8 rounded-3xl shadow-xl max-w-lg w-full border border-gray-100 dark:border-gray-700">
-                        <div className="mb-6 bg-blue-50 dark:bg-blue-900/30 w-20 h-20 rounded-full flex items-center justify-center mx-auto text-blue-600 dark:text-blue-400 shadow-sm">
-                            <i className="ph ph-student text-4xl"></i>
-                        </div>
-                        <h1 className="text-3xl font-bold text-gray-800 dark:text-white mb-2">Simulator Examen</h1>
-                        <p className="text-gray-500 dark:text-gray-400 mb-8">
-                            <span className="bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-sm font-semibold">
-                                {totalAvailable} grile disponibile
-                            </span>
-                        </p>
+                <div className="flex flex-col items-center justify-center min-h-screen p-4 text-center fade-in">
+                    <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl max-w-md w-full border border-gray-100 dark:border-gray-700">
                         
-                        {/* Selector Mod */}
-                        <div className="mb-6">
-                            <label className="block text-left text-sm font-bold text-gray-700 dark:text-gray-300 mb-3 ml-1">
-                                Alege Modul
-                            </label>
-                            <div className="flex bg-gray-100 dark:bg-gray-700 p-1 rounded-xl">
-                                <button 
-                                    onClick={() => setMode('exam')}
-                                    className={`flex-1 py-3 px-4 rounded-lg font-bold text-sm transition-all flex items-center justify-center gap-2 ${
-                                        mode === 'exam' 
-                                        ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-300 shadow-sm' 
-                                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
-                                    }`}
-                                >
-                                    <i className="ph-bold ph-cards"></i>
-                                    Examen (1 câte 1)
-                                </button>
-                                <button 
-                                    onClick={() => setMode('practice')}
-                                    className={`flex-1 py-3 px-4 rounded-lg font-bold text-sm transition-all flex items-center justify-center gap-2 ${
-                                        mode === 'practice' 
-                                        ? 'bg-white dark:bg-gray-600 text-green-600 dark:text-green-300 shadow-sm' 
-                                        : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
-                                    }`}
-                                >
-                                    <i className="ph-bold ph-list-checks"></i>
-                                    Practică (Listă)
-                                </button>
+                        {/* Header Compact */}
+                        <div className="mb-5">
+                            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 mb-3">
+                                <i className="ph-fill ph-student text-2xl"></i>
                             </div>
+                            <h1 className="text-xl font-bold text-gray-800 dark:text-white leading-tight">Simulator Examen ISF</h1>
+                            <p className="text-xs text-blue-600 dark:text-blue-400 font-medium mt-1">Creat de Alexandru Amadeus</p>
                         </div>
 
-                        {/* Selector Nr Intrebari */}
-                        <div className="mb-8">
-                            <label className="block text-left text-sm font-bold text-gray-700 dark:text-gray-300 mb-3 ml-1">
-                                Număr Întrebări
-                            </label>
-                            <div className="grid grid-cols-3 gap-3 mb-3">
-                                {presetOptions.map(num => (
+                        {/* Resume Button */}
+                        {hasSavedSession && (
+                            <button 
+                                onClick={onResume}
+                                className="w-full mb-6 py-3 bg-green-600 hover:bg-green-700 text-white text-sm font-bold rounded-xl shadow-md flex items-center justify-center gap-2 animate-pulse"
+                            >
+                                <i className="ph-bold ph-arrow-u-up-left"></i>
+                                <span>Continuă Sesiunea Anterioară</span>
+                            </button>
+                        )}
+
+                        <div className="space-y-4">
+                            
+                            {/* Selector Mod */}
+                            <div className="text-left">
+                                <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide ml-1 block mb-2">Mod de lucru</label>
+                                <div className="flex bg-gray-100 dark:bg-gray-700 p-1 rounded-lg">
                                     <button 
-                                        key={num}
-                                        onClick={() => { setSelectedCount(num); setIsCustom(false); }}
-                                        className={`py-3 rounded-xl border font-medium transition-all ${
-                                            !isCustom && selectedCount === num 
+                                        onClick={() => setMode('exam')}
+                                        className={`flex-1 py-2 rounded-md text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+                                            mode === 'exam' 
+                                            ? 'bg-white dark:bg-gray-600 text-blue-600 dark:text-blue-300 shadow-sm' 
+                                            : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
+                                        }`}
+                                    >
+                                        <i className="ph-bold ph-cards"></i>
+                                        Examen
+                                    </button>
+                                    <button 
+                                        onClick={() => setMode('practice')}
+                                        className={`flex-1 py-2 rounded-md text-xs font-bold transition-all flex items-center justify-center gap-1.5 ${
+                                            mode === 'practice' 
+                                            ? 'bg-white dark:bg-gray-600 text-green-600 dark:text-green-300 shadow-sm' 
+                                            : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200'
+                                        }`}
+                                    >
+                                        <i className="ph-bold ph-list-checks"></i>
+                                        Practică
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* Selector Partea / Capitolul */}
+                            <div className="text-left">
+                                <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide ml-1 block mb-2">
+                                    Alege Partea / Capitolul
+                                </label>
+                                <div className="grid grid-cols-1 gap-2">
+                                    {[
+                                        { id: 'all', label: 'Toate Capitolele', sub: 'Tot setul complet (1-507)' },
+                                        { id: 'part1', label: 'Partea 1: Teoria Riscului', sub: 'Definiții, Asigurări, Reasigurare (1-169)' },
+                                        { id: 'part2', label: 'Partea 2: Tipuri de Asigurări', sub: 'Viață, Auto, Bunuri, Sănătate (170-349)' },
+                                        { id: 'part3', label: 'Partea 3: Vânzare & Legislație', sub: 'Psihologie, Etică, Petiții (350-507)' }
+                                    ].map((part) => (
+                                        <button
+                                            key={part.id}
+                                            onClick={() => setSelectedPart(part.id)}
+                                            className={`p-3 rounded-lg border text-left transition-all ${
+                                                selectedPart === part.id
+                                                ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-500 ring-1 ring-blue-500/20'
+                                                : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-500'
+                                            }`}
+                                        >
+                                            <div className={`text-xs font-bold ${selectedPart === part.id ? 'text-blue-700 dark:text-blue-300' : 'text-gray-700 dark:text-gray-200'}`}>
+                                                {part.label}
+                                            </div>
+                                            <div className="text-[10px] text-gray-500 dark:text-gray-400 mt-0.5">
+                                                {part.sub}
+                                            </div>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* Selector Nr Intrebari */}
+                            <div className="text-left">
+                                <label className="text-xs font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wide ml-1 block mb-2">
+                                    Număr Întrebări <span className="font-normal text-gray-400 normal-case">(Disponibile: {availableForCurrentPart})</span>
+                                </label>
+                                <div className="grid grid-cols-4 gap-2 mb-2">
+                                    {presetOptions.map(num => (
+                                        <button 
+                                            key={num}
+                                            onClick={() => { setSelectedCount(num); setIsCustom(false); }}
+                                            className={`py-2 rounded-lg border text-xs font-bold transition-all ${
+                                                !isCustom && selectedCount === num 
+                                                ? 'bg-blue-600 border-blue-600 text-white' 
+                                                : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
+                                            }`}
+                                        >
+                                            {num}
+                                        </button>
+                                    ))}
+                                </div>
+                                <div className="flex gap-2">
+                                    <button 
+                                        onClick={() => { setSelectedCount(availableForCurrentPart); setIsCustom(false); }}
+                                        className={`flex-1 py-2 rounded-lg border text-xs font-bold transition-all ${
+                                            !isCustom && selectedCount === availableForCurrentPart 
                                             ? 'bg-blue-600 border-blue-600 text-white' 
                                             : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
                                         }`}
                                     >
-                                        {num}
+                                        Toate ({availableForCurrentPart})
                                     </button>
-                                ))}
-                                <button 
-                                    onClick={() => { setSelectedCount(totalAvailable); setIsCustom(false); }}
-                                    className={`py-3 rounded-xl border font-medium transition-all col-span-2 ${
-                                        !isCustom && selectedCount === totalAvailable 
-                                        ? 'bg-blue-600 border-blue-600 text-white' 
-                                        : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-600 text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
-                                    }`}
-                                >
-                                    Toate
-                                </button>
-                            </div>
-                            
-                            {/* Custom Input */}
-                            <div 
-                                onClick={() => setIsCustom(true)}
-                                className={`flex items-center border rounded-xl p-1 transition-all ${
-                                    isCustom 
-                                    ? 'border-blue-600 ring-2 ring-blue-100 dark:ring-blue-900 bg-white dark:bg-gray-800' 
-                                    : 'border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700'
-                                }`}
-                            >
-                                <span className={`px-4 py-2 rounded-lg font-medium text-sm ${isCustom ? 'text-blue-600 bg-blue-50 dark:bg-blue-900/20' : 'text-gray-500'}`}>Custom</span>
-                                <input 
-                                    type="number" 
-                                    placeholder="..."
-                                    value={customCount}
-                                    onChange={(e) => setCustomCount(e.target.value)}
-                                    onFocus={() => setIsCustom(true)}
-                                    className="flex-1 bg-transparent outline-none px-3 py-2 text-gray-800 dark:text-white font-semibold"
-                                    min="1"
-                                    max={totalAvailable}
-                                />
+                                    <div 
+                                        onClick={() => setIsCustom(true)}
+                                        className={`flex-1 flex items-center border rounded-lg px-2 transition-all ${
+                                            isCustom 
+                                            ? 'border-blue-600 ring-1 ring-blue-100 dark:ring-blue-900 bg-white dark:bg-gray-800' 
+                                            : 'border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700'
+                                        }`}
+                                    >
+                                        <input 
+                                            type="number" 
+                                            placeholder="Custom"
+                                            value={customCount}
+                                            onChange={(e) => setCustomCount(e.target.value)}
+                                            onFocus={() => setIsCustom(true)}
+                                            className="w-full bg-transparent outline-none text-xs font-bold text-center text-gray-800 dark:text-white placeholder-gray-400"
+                                            min="1"
+                                            max={availableForCurrentPart}
+                                        />
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
                         <button 
                             onClick={handleStart}
-                            className="w-full py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-lg transform transition active:scale-[0.98] flex items-center justify-center gap-2 text-lg"
+                            className="w-full mt-6 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-sm font-bold rounded-xl shadow-lg shadow-blue-200/50 dark:shadow-none transform transition active:scale-[0.98] flex items-center justify-center gap-2"
                         >
-                            <span>Începe</span>
-                            <i className="ph-bold ph-play"></i>
+                            <span>Începe Test Nou</span>
+                            <i className="ph-bold ph-caret-right"></i>
                         </button>
                     </div>
                 </div>
             );
         }
 
-        // --- EXAM MODE SCREEN ---
-        function ExamModeScreen({ questions, onFinish }) {
-            const [currentIndex, setCurrentIndex] = useState(0);
-            const [answers, setAnswers] = useState({});
-            const [isAnswered, setIsAnswered] = useState(false);
-            const [score, setScore] = useState({ correct: 0, wrong: 0 });
-
+        function ExamModeScreen({ questions, currentIdx, answers, onAnswer, onNext, onExit }) {
             useEffect(() => {
                 window.scrollTo({ top: 0, behavior: 'smooth' });
-            }, [currentIndex]);
+            }, [currentIdx]);
 
-            const currentQ = questions[currentIndex];
+            if (!questions || questions.length === 0) return <div>Se încarcă...</div>;
+            const currentQ = questions[currentIdx];
+            if (!currentQ) return <div>Eroare la încărcarea întrebării.</div>;
 
-            const handleAnswer = (optionId) => {
-                if (isAnswered) return;
-                const isCorrect = optionId === currentQ.correctAnswer;
-                setAnswers(prev => ({ ...prev, [currentQ.id]: optionId }));
-                setScore(prev => ({
-                    correct: prev.correct + (isCorrect ? 1 : 0),
-                    wrong: prev.wrong + (isCorrect ? 0 : 1)
-                }));
-                setIsAnswered(true);
-            };
+            const isAnswered = answers[currentQ.id] !== undefined;
+            
+            const score = useMemo(() => {
+                let correct = 0, wrong = 0;
+                Object.keys(answers).forEach(qid => {
+                    const q = questions.find(q => q.id === parseInt(qid));
+                    if(q) {
+                        if(answers[qid] === q.correctAnswer) correct++; else wrong++;
+                    }
+                });
+                return { correct, wrong };
+            }, [answers, questions]);
 
-            const nextQuestion = () => {
-                if (currentIndex < questions.length - 1) {
-                    setCurrentIndex(prev => prev + 1);
-                    setIsAnswered(false);
-                } else {
-                    onFinish(score);
-                }
-            };
-
-            const progress = ((currentIndex + 1) / questions.length) * 100;
+            const progress = ((currentIdx + 1) / questions.length) * 100;
 
             return (
-                <div className="min-h-screen flex flex-col max-w-3xl mx-auto p-4 md:p-6 fade-in pb-24 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-                    {/* Header */}
-                    <div className="sticky top-0 z-10 bg-gray-50 dark:bg-gray-900 pt-2 pb-4 mb-2">
-                        <div className="flex justify-between items-center mb-3 bg-white dark:bg-gray-800 p-3 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700">
+                <div className="min-h-screen flex flex-col max-w-xl mx-auto p-4 fade-in pb-20">
+                    <ExitButton onExit={onExit} />
+                    
+                    {/* Header Compact */}
+                    <div className="sticky top-0 z-10 bg-gray-50 dark:bg-gray-900 pt-2 pb-3 mb-1">
+                        <div className="flex justify-between items-center mb-2 bg-white dark:bg-gray-800 px-4 py-2 rounded-lg shadow-sm border border-gray-100 dark:border-gray-700">
                             <div>
-                                <span className="text-xs text-gray-400 font-bold uppercase tracking-wider">Progres</span>
-                                <div className="text-sm font-bold text-gray-700 dark:text-gray-200">
-                                    {currentIndex + 1} <span className="text-gray-400 dark:text-gray-500 font-normal">/ {questions.length}</span>
-                                </div>
+                                <span className="text-[10px] text-gray-400 font-bold uppercase tracking-wider block">Progres</span>
+                                <span className="text-sm font-bold text-gray-700 dark:text-gray-200">
+                                    {currentIdx + 1} <span className="text-gray-400 font-normal">/ {questions.length}</span>
+                                </span>
                             </div>
-                            <div className="flex gap-3">
-                                <div className="bg-green-50 dark:bg-green-900/30 px-3 py-1 rounded-lg border border-green-100 dark:border-green-800 text-center">
-                                    <div className="text-[10px] font-bold text-green-600 dark:text-green-400 uppercase">Corect</div>
-                                    <div className="text-lg font-bold text-green-700 dark:text-green-300 leading-none">{score.correct}</div>
+                            <div className="flex gap-2">
+                                <div className="flex flex-col items-center px-2">
+                                    <span className="text-[9px] font-bold text-green-600 dark:text-green-400 uppercase">Corect</span>
+                                    <span className="text-sm font-bold text-green-700 dark:text-green-300">{score.correct}</span>
                                 </div>
-                                <div className="bg-red-50 dark:bg-red-900/30 px-3 py-1 rounded-lg border border-red-100 dark:border-red-800 text-center">
-                                    <div className="text-[10px] font-bold text-red-600 dark:text-red-400 uppercase">Greșit</div>
-                                    <div className="text-lg font-bold text-red-700 dark:text-red-300 leading-none">{score.wrong}</div>
+                                <div className="w-px bg-gray-200 dark:bg-gray-700 h-6 self-center"></div>
+                                <div className="flex flex-col items-center px-2">
+                                    <span className="text-[9px] font-bold text-red-600 dark:text-red-400 uppercase">Greșit</span>
+                                    <span className="text-sm font-bold text-red-700 dark:text-red-300">{score.wrong}</span>
                                 </div>
                             </div>
                         </div>
-                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 overflow-hidden">
-                            <div className="bg-blue-600 h-2 rounded-full transition-all duration-500" style={{ width: `${progress}%` }}></div>
+                        <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-1.5 overflow-hidden">
+                            <div className="bg-blue-600 h-1.5 rounded-full transition-all duration-300" style={{ width: `${progress}%` }}></div>
                         </div>
                     </div>
 
                     <QuestionCard 
                         question={currentQ}
-                        index={currentIndex}
+                        index={currentIdx}
                         selectedOption={answers[currentQ.id]}
-                        onSelect={handleAnswer}
+                        onSelect={(optId) => onAnswer(currentQ.id, optId)}
                         showFeedback={isAnswered}
                         mode="exam"
                     />
 
                     {/* Footer */}
-                    <div className="fixed bottom-0 left-0 w-full bg-white/90 dark:bg-gray-800/90 backdrop-blur-md border-t border-gray-200 dark:border-gray-700 p-4 flex justify-center z-20">
-                        <div className="w-full max-w-3xl">
+                    <div className="fixed bottom-0 left-0 w-full bg-white/95 dark:bg-gray-800/95 backdrop-blur-md border-t border-gray-200 dark:border-gray-700 p-3 flex justify-center z-20">
+                        <div className="w-full max-w-xl">
                             {isAnswered ? (
                                 <button 
-                                    onClick={nextQuestion}
-                                    className="w-full py-3.5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-bold rounded-xl shadow-lg transition transform active:scale-[0.98] flex items-center justify-center gap-2"
+                                    onClick={onNext}
+                                    className="w-full py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-bold rounded-xl shadow-lg transition transform active:scale-[0.98] flex items-center justify-center gap-2"
                                 >
-                                    <span>{currentIndex < questions.length - 1 ? 'Următoarea' : 'Vezi Rezultate'}</span>
+                                    <span>{currentIdx < questions.length - 1 ? 'Următoarea' : 'Vezi Rezultate'}</span>
                                     <i className="ph-bold ph-arrow-right"></i>
                                 </button>
                             ) : (
-                                <div className="text-center text-gray-400 dark:text-gray-500 text-sm font-medium py-2">
+                                <div className="text-center text-gray-400 dark:text-gray-500 text-xs font-medium py-2">
                                     Alege un răspuns pentru a continua
                                 </div>
                             )}
@@ -9544,32 +9573,12 @@
             );
         }
 
-        // --- PRACTICE MODE SCREEN (UPDATED) ---
-        function PracticeModeScreen({ questions, onBackToMenu }) {
-            const [answers, setAnswers] = useState({});
-            const [isSubmitted, setIsSubmitted] = useState(false);
+        function PracticeModeScreen({ questions, answers, onAnswer, isSubmitted, onSubmit, onExit }) {
+            if (!questions || questions.length === 0) return <div>Se încarcă...</div>;
             
-            const handleSelect = (qId, optId) => {
-                if (isSubmitted) return; // Prevent changing answers after submit
-                setAnswers(prev => ({ ...prev, [qId]: optId }));
-            };
-
-            const handleSubmit = () => {
-                if (!isSubmitted) {
-                    if (Object.keys(answers).length < questions.length) {
-                        if(!confirm("Nu ai răspuns la toate întrebările. Sigur vrei să afișezi rezultatele?")) return;
-                    }
-                    setIsSubmitted(true);
-                    window.scrollTo({ top: 0, behavior: 'smooth' });
-                } else {
-                    onBackToMenu();
-                }
-            };
-
             const progress = Object.keys(answers).length;
             const progressPercent = (progress / questions.length) * 100;
 
-            // Calculate simple stats for header (only when submitted)
             const stats = useMemo(() => {
                 if (!isSubmitted) return null;
                 let correct = 0;
@@ -9581,53 +9590,55 @@
 
             return (
                 <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-                    {/* Sticky Header Progress */}
-                    <div className="sticky top-0 z-30 bg-white/80 dark:bg-gray-800/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 px-4 py-3 shadow-sm">
-                        <div className="max-w-3xl mx-auto flex items-center justify-between">
+                    <ExitButton onExit={onExit} />
+                    
+                    {/* Sticky Header */}
+                    <div className="sticky top-0 z-30 bg-white/90 dark:bg-gray-800/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-700 px-4 py-2 shadow-sm">
+                        <div className="max-w-xl mx-auto flex items-center justify-between pl-8"> 
                             <div className="flex flex-col">
                                 {isSubmitted ? (
                                     <>
-                                        <span className="text-xs font-bold text-green-600 dark:text-green-400 uppercase">Rezultat</span>
+                                        <span className="text-[10px] font-bold text-green-600 dark:text-green-400 uppercase">Rezultat</span>
                                         <span className="text-sm font-bold text-gray-800 dark:text-white">
                                             {stats.correct} / {stats.total} Corecte
                                         </span>
                                     </>
                                 ) : (
                                     <>
-                                        <span className="text-xs font-bold text-gray-400 uppercase">Răspunse</span>
+                                        <span className="text-[10px] font-bold text-gray-400 uppercase">Răspunse</span>
                                         <span className="text-sm font-bold text-gray-800 dark:text-white">
                                             {progress} <span className="text-gray-400 font-normal">/ {questions.length}</span>
                                         </span>
                                     </>
                                 )}
                             </div>
-                            <div className="w-32 md:w-48 bg-gray-200 dark:bg-gray-700 rounded-full h-2.5">
-                                <div className={`h-2.5 rounded-full transition-all duration-300 ${isSubmitted ? 'bg-blue-600' : 'bg-green-500'}`} style={{ width: isSubmitted ? '100%' : `${progressPercent}%` }}></div>
+                            <div className="w-24 bg-gray-200 dark:bg-gray-700 rounded-full h-2">
+                                <div className={`h-2 rounded-full transition-all duration-300 ${isSubmitted ? 'bg-blue-600' : 'bg-green-500'}`} style={{ width: isSubmitted ? '100%' : `${progressPercent}%` }}></div>
                             </div>
                         </div>
                     </div>
 
-                    {/* Scrollable List */}
-                    <div className="max-w-3xl mx-auto p-4 md:p-6 pb-32">
+                    {/* List */}
+                    <div className="max-w-xl mx-auto p-4 pb-24">
                         {questions.map((q, idx) => (
                             <QuestionCard 
                                 key={q.id}
                                 question={q}
                                 index={idx}
                                 selectedOption={answers[q.id]}
-                                onSelect={(optId) => handleSelect(q.id, optId)}
+                                onSelect={(optId) => !isSubmitted && onAnswer(q.id, optId)}
                                 showFeedback={isSubmitted} 
                                 mode="practice"
                             />
                         ))}
                     </div>
 
-                    {/* Sticky Footer Action */}
-                    <div className="fixed bottom-0 left-0 w-full bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-4 shadow-lg z-30">
-                        <div className="max-w-3xl mx-auto">
+                    {/* Sticky Footer */}
+                    <div className="fixed bottom-0 left-0 w-full bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-3 shadow-lg z-30">
+                        <div className="max-w-xl mx-auto">
                             <button 
-                                onClick={handleSubmit}
-                                className={`w-full py-4 text-white font-bold rounded-xl shadow-lg transform transition active:scale-[0.98] flex items-center justify-center gap-2 ${
+                                onClick={onSubmit}
+                                className={`w-full py-3 text-white text-sm font-bold rounded-xl shadow-lg transform transition active:scale-[0.98] flex items-center justify-center gap-2 ${
                                     isSubmitted 
                                     ? 'bg-gray-800 hover:bg-gray-900 dark:bg-gray-700 dark:hover:bg-gray-600' 
                                     : 'bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700'
@@ -9635,13 +9646,13 @@
                             >
                                 {isSubmitted ? (
                                     <>
-                                        <i className="ph-bold ph-arrow-counter-clockwise text-xl"></i>
-                                        <span>Test Nou / Meniu</span>
+                                        <i className="ph-bold ph-arrow-counter-clockwise text-lg"></i>
+                                        <span>Înapoi la Meniu</span>
                                     </>
                                 ) : (
                                     <>
-                                        <i className="ph-bold ph-check-circle text-xl"></i>
-                                        <span>Verifică Răspunsurile</span>
+                                        <i className="ph-bold ph-check-circle text-lg"></i>
+                                        <span>Verifică Tot</span>
                                     </>
                                 )}
                             </button>
@@ -9651,7 +9662,6 @@
             );
         }
 
-        // --- RESULT SCREEN ---
         function ResultScreen({ score, total, onRestart }) {
             const percentage = total > 0 ? Math.round((score.correct / total) * 100) : 0;
             let message = "";
@@ -9663,61 +9673,58 @@
             else { message = "Mai încearcă"; colorClass = "text-red-600 dark:text-red-400"; }
 
             return (
-                <div className="min-h-screen flex items-center justify-center p-4 fade-in bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
-                    <div className="bg-white dark:bg-gray-800 p-8 md:p-12 rounded-3xl shadow-2xl max-w-lg w-full text-center border border-gray-100 dark:border-gray-700">
+                <div className="min-h-screen flex items-center justify-center p-4 fade-in bg-gray-50 dark:bg-gray-900">
+                    <div className="bg-white dark:bg-gray-800 p-8 rounded-2xl shadow-xl max-w-sm w-full border border-gray-100 dark:border-gray-700 text-center">
                         
-                        <div className="mb-8 relative inline-flex items-center justify-center">
-                             <svg className="w-48 h-48 transform -rotate-90 drop-shadow-md">
+                        <div className="mb-6 relative inline-flex items-center justify-center">
+                             <svg className="w-32 h-32 transform -rotate-90">
                                 <circle
                                     className="text-gray-100 dark:text-gray-700"
-                                    strokeWidth="16"
+                                    strokeWidth="10"
                                     stroke="currentColor"
                                     fill="transparent"
-                                    r="80"
-                                    cx="96"
-                                    cy="96"
+                                    r="58"
+                                    cx="64"
+                                    cy="64"
                                 />
                                 <circle
                                     className={percentage >= 50 ? "text-blue-500" : "text-red-500"}
-                                    strokeWidth="16"
-                                    strokeDasharray={502}
-                                    strokeDashoffset={502 - (502 * percentage) / 100}
+                                    strokeWidth="10"
+                                    strokeDasharray={365}
+                                    strokeDashoffset={365 - (365 * percentage) / 100}
                                     strokeLinecap="round"
                                     stroke="currentColor"
                                     fill="transparent"
-                                    r="80"
-                                    cx="96"
-                                    cy="96"
+                                    r="58"
+                                    cx="64"
+                                    cy="64"
                                     style={{transition: "stroke-dashoffset 1s ease-out"}}
                                 />
                             </svg>
                             <div className="absolute top-0 left-0 w-full h-full flex flex-col items-center justify-center">
-                                <span className={`text-5xl font-extrabold ${colorClass}`}>{percentage}%</span>
-                                <span className="text-gray-400 text-sm font-medium uppercase mt-1">Scor Final</span>
+                                <span className={`text-3xl font-extrabold ${colorClass}`}>{percentage}%</span>
                             </div>
                         </div>
 
-                        <div className="mb-8">
-                            <h2 className={`text-3xl font-bold mb-2 ${colorClass}`}>{message}</h2>
-                            <p className="text-gray-500 dark:text-gray-400">Test finalizat.</p>
-                        </div>
+                        <h2 className={`text-2xl font-bold mb-1 ${colorClass}`}>{message}</h2>
+                        <p className="text-sm text-gray-500 dark:text-gray-400 mb-6">Ai terminat simularea.</p>
 
-                        <div className="grid grid-cols-2 gap-4 mb-8">
-                            <div className="p-5 bg-green-50 dark:bg-green-900/20 rounded-2xl border border-green-100 dark:border-green-800">
-                                <p className="text-green-600 dark:text-green-400 font-bold text-xs uppercase tracking-wider mb-1">Corecte</p>
-                                <p className="text-3xl font-bold text-green-700 dark:text-green-300">{score.correct}</p>
+                        <div className="grid grid-cols-2 gap-3 mb-6">
+                            <div className="p-3 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-100 dark:border-green-800">
+                                <p className="text-green-600 dark:text-green-400 font-bold text-[10px] uppercase tracking-wider mb-0.5">Corecte</p>
+                                <p className="text-2xl font-bold text-green-700 dark:text-green-300">{score.correct}</p>
                             </div>
-                            <div className="p-5 bg-red-50 dark:bg-red-900/20 rounded-2xl border border-red-100 dark:border-red-800">
-                                <p className="text-red-600 dark:text-red-400 font-bold text-xs uppercase tracking-wider mb-1">Greșite</p>
-                                <p className="text-3xl font-bold text-red-700 dark:text-red-300">{score.wrong}</p>
+                            <div className="p-3 bg-red-50 dark:bg-red-900/20 rounded-xl border border-red-100 dark:border-red-800">
+                                <p className="text-red-600 dark:text-red-400 font-bold text-[10px] uppercase tracking-wider mb-0.5">Greșite</p>
+                                <p className="text-2xl font-bold text-red-700 dark:text-red-300">{score.wrong}</p>
                             </div>
                         </div>
 
                         <button 
                             onClick={onRestart}
-                            className="w-full py-4 bg-white dark:bg-gray-700 border-2 border-gray-200 dark:border-gray-600 text-gray-700 dark:text-white font-bold rounded-xl hover:bg-gray-50 dark:hover:bg-gray-600 transition flex items-center justify-center gap-2 group"
+                            className="w-full py-3 bg-gray-900 dark:bg-white text-white dark:text-gray-900 text-sm font-bold rounded-xl shadow-md transition flex items-center justify-center gap-2 hover:opacity-90"
                         >
-                            <i className="ph-bold ph-arrow-counter-clockwise group-hover:-rotate-90 transition-transform duration-300"></i>
+                            <i className="ph-bold ph-arrow-counter-clockwise"></i>
                             <span>Începe un test nou</span>
                         </button>
                     </div>
@@ -9727,84 +9734,202 @@
 
         // --- MAIN APP ---
         function App() {
-            const [gameState, setGameState] = useState('setup'); 
+            // STATE PRINCIPAL
+            const [screen, setScreen] = useState('setup'); // setup, playing, finished
             const [gameMode, setGameMode] = useState('exam');
             const [questionsPool, setQuestionsPool] = useState([]);
-            const [activeQuestions, setActiveQuestions] = useState([]);
-            const [finalScore, setFinalScore] = useState(null);
             
-            // Dark Mode State
+            // SESIUNE (pentru persistenta)
+            const [activeQuestions, setActiveQuestions] = useState([]);
+            const [answers, setAnswers] = useState({});
+            const [currentIndex, setCurrentIndex] = useState(0);
+            const [isSubmitted, setIsSubmitted] = useState(false);
             const [isDark, setIsDark] = useState(false);
+            const [hasSavedSession, setHasSavedSession] = useState(false);
 
+            // 1. INCARCARE INITIALA (DATA + LOCALSTORAGE)
             useEffect(() => {
                 const processed = processQuestions(RAW_DATA);
                 setQuestionsPool(processed);
                 
-                // Check system preference
-                if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                // Dark Mode Check
+                if (localStorage.getItem('isf_theme') === 'dark' || (!localStorage.getItem('isf_theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
                     setIsDark(true);
+                }
+
+                // Check for saved session on load
+                const savedSession = localStorage.getItem('isf_session');
+                if (savedSession) {
+                    try {
+                        const sess = JSON.parse(savedSession);
+                        if (sess.activeQuestions && sess.activeQuestions.length > 0) {
+                            setHasSavedSession(true);
+                            
+                            // AUTO-RESTORE logic (doar dacă utilizatorul apasă butonul "Continuă")
+                            // Nu încărcăm starea direct aici pentru a lăsa utilizatorul să aleagă.
+                        }
+                    } catch(e) { console.error("Err loading session", e); }
                 }
             }, []);
 
+            // 2. SAVING STATE (La orice schimbare relevanta)
+            useEffect(() => {
+                if (activeQuestions.length > 0) {
+                    const sessionData = {
+                        screen,
+                        gameMode,
+                        activeQuestions,
+                        answers,
+                        currentIndex,
+                        isSubmitted
+                    };
+                    localStorage.setItem('isf_session', JSON.stringify(sessionData));
+                    setHasSavedSession(true);
+                }
+            }, [screen, gameMode, activeQuestions, answers, currentIndex, isSubmitted]);
+
+            // 3. THEME EFFECT
             useEffect(() => {
                 if (isDark) {
                     document.documentElement.classList.add('dark');
+                    localStorage.setItem('isf_theme', 'dark');
                 } else {
                     document.documentElement.classList.remove('dark');
+                    localStorage.setItem('isf_theme', 'light');
                 }
             }, [isDark]);
 
-            const startGame = (count, mode) => {
-                const shuffled = [...questionsPool].sort(() => 0.5 - Math.random());
-                const safeCount = Math.min(count, questionsPool.length);
+            // HANDLERS
+            const startGame = (count, mode, part) => {
+                // 1. Filtrăm întâi după Partea selectată
+                let filteredPool = [...questionsPool];
+                
+                if (part === 'part1') {
+                    filteredPool = filteredPool.filter(q => q.id >= 1 && q.id <= 169);
+                } else if (part === 'part2') {
+                    filteredPool = filteredPool.filter(q => q.id >= 170 && q.id <= 349);
+                } else if (part === 'part3') {
+                    filteredPool = filteredPool.filter(q => q.id >= 350 && q.id <= 507);
+                }
+                // 'all' rămâne setul complet
+
+                // 2. Amestecăm subsetul rezultat
+                const shuffled = filteredPool.sort(() => 0.5 - Math.random());
+                
+                // 3. Tăiem numărul dorit de întrebări (asigurându-ne că nu cerem mai mult decât există)
+                const safeCount = Math.min(count, filteredPool.length);
                 const selected = shuffled.slice(0, safeCount);
                 
                 setActiveQuestions(selected);
                 setGameMode(mode);
-                setGameState('playing');
+                setAnswers({});
+                setCurrentIndex(0);
+                setIsSubmitted(false);
+                setScreen('playing');
             };
 
-            const finishGame = (score) => {
-                setFinalScore(score);
-                setGameState('finished');
+            const resumeGame = () => {
+                const savedSession = localStorage.getItem('isf_session');
+                if (savedSession) {
+                    const sess = JSON.parse(savedSession);
+                    setActiveQuestions(sess.activeQuestions);
+                    setAnswers(sess.answers || {});
+                    setCurrentIndex(sess.currentIndex || 0);
+                    setGameMode(sess.gameMode || 'exam');
+                    setIsSubmitted(sess.isSubmitted || false);
+                    setScreen(sess.screen || 'playing');
+                }
             };
 
-            const restartGame = () => {
-                setGameState('setup');
-                setFinalScore(null);
+            const handleAnswer = (qId, optId) => {
+                setAnswers(prev => ({ ...prev, [qId]: optId }));
+            };
+
+            const handleNextQuestion = () => {
+                if (currentIndex < activeQuestions.length - 1) {
+                    setCurrentIndex(prev => prev + 1);
+                } else {
+                    setScreen('finished');
+                }
+            };
+
+            const handlePracticeSubmit = () => {
+                if (!isSubmitted) {
+                    if (Object.keys(answers).length < activeQuestions.length) {
+                        if(!confirm("Nu ai răspuns la toate întrebările. Sigur vrei să afișezi rezultatele?")) return;
+                    }
+                    setIsSubmitted(true);
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                } else {
+                    // Back to menu from Practice results
+                    clearSession();
+                }
+            };
+
+            const handleExit = () => {
+                // Return to menu, keep session saved
+                setScreen('setup');
+            };
+
+            const clearSession = () => {
+                localStorage.removeItem('isf_session');
                 setActiveQuestions([]);
+                setAnswers({});
+                setCurrentIndex(0);
+                setIsSubmitted(false);
+                setHasSavedSession(false);
+                setScreen('setup');
+            };
+
+            const calculateScore = () => {
+                let correct = 0;
+                let wrong = 0;
+                activeQuestions.forEach(q => {
+                    if (answers[q.id] === q.correctAnswer) correct++; else wrong++;
+                });
+                return { correct, wrong };
             };
 
             return (
-                <div className="min-h-screen bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300">
+                <div className="min-h-screen">
                     <ThemeToggle isDark={isDark} toggleTheme={() => setIsDark(!isDark)} />
                     
-                    {gameState === 'setup' && (
+                    {screen === 'setup' && (
                         <SetupScreen 
-                            totalAvailable={questionsPool.length} 
+                            totalPool={questionsPool} 
                             onStart={startGame} 
+                            hasSavedSession={hasSavedSession && activeQuestions.length > 0}
+                            onResume={resumeGame}
                         />
                     )}
                     
-                    {gameState === 'playing' && gameMode === 'exam' && (
+                    {screen === 'playing' && gameMode === 'exam' && (
                         <ExamModeScreen 
                             questions={activeQuestions} 
-                            onFinish={finishGame} 
+                            currentIdx={currentIndex}
+                            answers={answers}
+                            onAnswer={handleAnswer}
+                            onNext={handleNextQuestion}
+                            onExit={handleExit}
                         />
                     )}
 
-                    {gameState === 'playing' && gameMode === 'practice' && (
+                    {screen === 'playing' && gameMode === 'practice' && (
                         <PracticeModeScreen 
                             questions={activeQuestions} 
-                            onBackToMenu={restartGame} 
+                            answers={answers}
+                            onAnswer={handleAnswer}
+                            isSubmitted={isSubmitted}
+                            onSubmit={handlePracticeSubmit}
+                            onExit={handleExit}
                         />
                     )}
                     
-                    {gameState === 'finished' && (
+                    {screen === 'finished' && (
                         <ResultScreen 
-                            score={finalScore} 
+                            score={calculateScore()} 
                             total={activeQuestions.length} 
-                            onRestart={restartGame} 
+                            onRestart={clearSession} 
                         />
                     )}
                 </div>
